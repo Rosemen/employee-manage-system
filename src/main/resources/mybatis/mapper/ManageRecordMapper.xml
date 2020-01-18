@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.scau.employee.mapper.ManageRecordMapper">
+    <resultMap id="BaseResultMap" type="cn.edu.scau.employee.entity.ManageRecord">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+        <result column="manage_type" jdbcType="VARCHAR" property="manageType"/>
+        <result column="manage_table" jdbcType="VARCHAR" property="manageTable"/>
+        <result column="manage_date" jdbcType="TIMESTAMP" property="manageDate"/>
+        <result column="service_name" jdbcType="VARCHAR" property="serviceName"/>
+        <result column="method_name" jdbcType="VARCHAR" property="methodName"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, username, manage_type, manage_table, manage_date, service_name, method_name
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from manage_record
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from manage_record
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" parameterType="cn.edu.scau.employee.entity.ManageRecord">
+    insert into manage_record (id, username, manage_type, 
+      manage_table, manage_date, service_name, 
+      method_name)
+    values (#{id,jdbcType=BIGINT}, #{username,jdbcType=VARCHAR}, #{manageType,jdbcType=VARCHAR}, 
+      #{manageTable,jdbcType=VARCHAR}, #{manageDate,jdbcType=TIMESTAMP}, #{serviceName,jdbcType=VARCHAR}, 
+      #{methodName,jdbcType=VARCHAR})
+  </insert>
+    <insert id="insertSelective" parameterType="cn.edu.scau.employee.entity.ManageRecord">
+        insert into manage_record
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="username != null">
+                username,
+            </if>
+            <if test="manageType != null">
+                manage_type,
+            </if>
+            <if test="manageTable != null">
+                manage_table,
+            </if>
+            <if test="manageDate != null">
+                manage_date,
+            </if>
+            <if test="serviceName != null">
+                service_name,
+            </if>
+            <if test="methodName != null">
+                method_name,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="username != null">
+                #{username,jdbcType=VARCHAR},
+            </if>
+            <if test="manageType != null">
+                #{manageType,jdbcType=VARCHAR},
+            </if>
+            <if test="manageTable != null">
+                #{manageTable,jdbcType=VARCHAR},
+            </if>
+            <if test="manageDate != null">
+                #{manageDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="serviceName != null">
+                #{serviceName,jdbcType=VARCHAR},
+            </if>
+            <if test="methodName != null">
+                #{methodName,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="cn.edu.scau.employee.entity.ManageRecord">
+        update manage_record
+        <set>
+            <if test="username != null">
+                username = #{username,jdbcType=VARCHAR},
+            </if>
+            <if test="manageType != null">
+                manage_type = #{manageType,jdbcType=VARCHAR},
+            </if>
+            <if test="manageTable != null">
+                manage_table = #{manageTable,jdbcType=VARCHAR},
+            </if>
+            <if test="manageDate != null">
+                manage_date = #{manageDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="serviceName != null">
+                service_name = #{serviceName,jdbcType=VARCHAR},
+            </if>
+            <if test="methodName != null">
+                method_name = #{methodName,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="cn.edu.scau.employee.entity.ManageRecord">
+    update manage_record
+    set username = #{username,jdbcType=VARCHAR},
+      manage_type = #{manageType,jdbcType=VARCHAR},
+      manage_table = #{manageTable,jdbcType=VARCHAR},
+      manage_date = #{manageDate,jdbcType=TIMESTAMP},
+      service_name = #{serviceName,jdbcType=VARCHAR},
+      method_name = #{methodName,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+    <insert id="batchInsert" parameterType="cn.edu.scau.employee.entity.ManageRecord">
+        insert into manage_record (id, username, manage_type,
+        manage_table, manage_date, service_name,
+        method_name)
+        values
+        <foreach collection="manageRecords" separator="," item="record">
+            (
+            #{record.id,jdbcType=BIGINT},
+            #{record.username,jdbcType=VARCHAR},
+            #{record.manageType,jdbcType=VARCHAR},
+            #{record.manageTable,jdbcType=VARCHAR},
+            #{record.manageDate,jdbcType=TIMESTAMP},
+            #{record.serviceName,jdbcType=VARCHAR},
+            #{record.methodName,jdbcType=VARCHAR}
+            )
+        </foreach>
+    </insert>
+
+    <delete id="deleteByManageDate" parameterType="java.util.Date">
+        delete from manage_record
+        where manage_date &lt;= #{manageDate, jdbcType=TIMESTAMP}
+    </delete>
+</mapper>
