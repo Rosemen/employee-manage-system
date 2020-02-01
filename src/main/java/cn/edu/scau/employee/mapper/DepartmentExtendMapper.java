@@ -17,4 +17,20 @@ public interface DepartmentExtendMapper {
      * @return
      */
     List<Department> selectAll();
+
+    /**
+     * 根据id列表删除部门信息
+     *
+     * @param ids
+     * @return
+     */
+    int deleteByIds(List<Long> ids);
+
+    /**
+     * 根据部门名模糊查询
+     *
+     * @param name
+     * @return
+     */
+    List<Department> findByName(String name);
 }

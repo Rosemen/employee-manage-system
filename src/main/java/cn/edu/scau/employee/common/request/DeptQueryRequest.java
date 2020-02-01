@@ -8,14 +8,14 @@ import lombok.Data;
 /**
  * @author chen.jiale
  * @Description
- * @date 2019/12/22 11:29
+ * @date 2020/1/22 12:14
  */
-@ApiModel(value = "UserQueryRequest", description = "用户查询条件")
 @Data
-public class UserQueryRequest {
+@ApiModel(value = "DeptQueryRequest", description = "部门查询request")
+public class DeptQueryRequest {
 
-    @ApiModelProperty(value = "用户名")
-    private String username;
+    @ApiModelProperty(value = "部门名")
+    private String name;
 
     @ApiModelProperty(value = "分页信息")
     private PageConstant page;

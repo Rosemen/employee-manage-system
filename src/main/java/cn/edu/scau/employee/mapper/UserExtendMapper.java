@@ -18,7 +18,7 @@ public interface UserExtendMapper {
      * @param username
      * @return
      */
-    User selectByUsername(String username);
+    List<User> selectByUsername(String username);
 
     /**
      * 查询所有
@@ -31,16 +31,17 @@ public interface UserExtendMapper {
      * 批量删除用户
      *
      * @param ids
-     */
-    int deleteByIds(List<Integer> ids);
-
-    /**
-     * 根据工号或姓名查询
-     *
-     * @param username
-     * @param name
      * @return
      */
-    List<User> selectByUsernameOrName(@Param("username") String username,
-                                      @Param("name") String name);
+    int deleteByIds(List<Long> ids);
+
+    /**
+     * 更新用户角色
+     *
+     * @param roleId
+     * @param roleIds
+     * @return
+     */
+    int updateByRoleIds(@Param("roleId") Long roleId,
+                        @Param("roleIds") List<Long> roleIds);
 }

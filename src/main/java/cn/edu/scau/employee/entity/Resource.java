@@ -13,17 +13,19 @@ import java.util.Date;
 @Data
 public class Resource {
 
-    private Integer id;
+    private Long id;
 
     private String menuName;
 
     private String url;
 
-    private Integer parentId;
+    private Long parentId;
 
     private Date createDate;
 
     private Date updateDate;
 
     private String remark;
+
+    private boolean leaf;
 }

@@ -3,11 +3,11 @@ package cn.edu.scau.employee.service;
 
 import cn.edu.scau.common.result.CommonResult;
 import cn.edu.scau.employee.common.request.RoleAddRequest;
+import cn.edu.scau.employee.common.request.RoleQueryRequest;
 
 import java.util.List;
 
 /**
- *
  * @author chen.jiale
  * @description 角色管理业务接口
  * @date 2019/11/20 15:26
@@ -29,19 +29,27 @@ public interface RoleService {
     CommonResult add(RoleAddRequest request);
 
     /**
-     * 批量删除角色
-     *
-     * @param ids
-     * @return
-     */
-    CommonResult delete(List<Integer> ids);
-
-    /**
      * 更新角色
      *
      * @param id
      * @param request
      * @return
      */
-    CommonResult update(Integer id, RoleAddRequest request);
+    CommonResult update(Long id, RoleAddRequest request);
+
+    /**
+     * 分页查询角色
+     *
+     * @param request
+     * @return
+     */
+    CommonResult findByName(RoleQueryRequest request);
+
+    /**
+     * 删除角色
+     *
+     * @param ids
+     * @return
+     */
+    CommonResult deleteByIds(List<Long> ids);
 }

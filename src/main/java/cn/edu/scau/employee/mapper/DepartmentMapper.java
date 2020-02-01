@@ -15,7 +15,7 @@ public interface DepartmentMapper {
      * @param id
      * @return
      */
-    int deleteById(Integer id);
+    int deleteById(Long id);
 
     /**
      * 添加部门
@@ -31,7 +31,7 @@ public interface DepartmentMapper {
      * @param id
      * @return
      */
-    Department selectById(Integer id);
+    Department selectById(Long id);
 
     /**
      * 修改部门

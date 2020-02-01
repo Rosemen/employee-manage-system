@@ -3,10 +3,7 @@ package cn.edu.scau.employee.service.impl;
 import cn.edu.scau.common.constant.PageConstant;
 import cn.edu.scau.common.result.CommonResult;
 import cn.edu.scau.common.result.PageCommonResult;
-import cn.edu.scau.common.util.ConvertUtil;
-import cn.edu.scau.common.util.JsonUtil;
-import cn.edu.scau.common.util.ObjectUtil;
-import cn.edu.scau.common.util.TokenUtil;
+import cn.edu.scau.common.util.*;
 import cn.edu.scau.employee.common.request.UserAddRequest;
 import cn.edu.scau.employee.common.request.UserLoginRequest;
 import cn.edu.scau.employee.common.request.UserQueryRequest;
@@ -14,6 +11,7 @@ import cn.edu.scau.employee.common.response.UserResponse;
 import cn.edu.scau.employee.common.util.EncryptUtil;
 import cn.edu.scau.employee.dao.TokenDao;
 import cn.edu.scau.employee.dao.UserDao;
+import cn.edu.scau.employee.dao.UserDetailDao;
 import cn.edu.scau.employee.entity.User;
 import cn.edu.scau.employee.service.UserService;
 import com.github.pagehelper.PageHelper;
@@ -26,6 +24,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
 import java.util.List;
@@ -45,11 +44,14 @@ public class UserServiceImpl implements UserService {
     private UserDao userDao;
 
     @Autowired
+    private UserDetailDao userDetailDao;
+
+    @Autowired
     private TokenDao tokenDao;
 
     @Override
     public CommonResult login(UserLoginRequest request) {
-        logger.info("用户: {}, 正在登录中....", request.getUsername());
+        logger.info("UserServiceImpl  用户: {}, 正在登录中....", request.getUsername());
         Subject currentUser = SecurityUtils.getSubject();
         UsernamePasswordToken token = new UsernamePasswordToken(request.getUsername(),
                 request.getPassword());
@@ -69,18 +71,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public CommonResult logout(String token) {
-        logger.info("用户: {} 正在退出登录...");
+        logger.info("UserServiceImpl  正在退出登录...");
         tokenDao.clearToken(token);
         Subject currentUser = SecurityUtils.getSubject();
         currentUser.logout();
         return CommonResult.success();
-    }
-
-    @Override
-    public CommonResult findByUserName(String username) {
-        User user = userDao.findByUsername(username);
-        UserResponse response = ConvertUtil.convert(user, UserResponse.class);
-        return CommonResult.success(response);
     }
 
     @Override
@@ -95,54 +90,68 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public CommonResult add(UserAddRequest request) {
-        logger.info("添加用户, 用户信息: {}", request.toString());
+        logger.info("UserServiceImpl  添加用户, 用户信息: {}", request.toString());
         User user = ConvertUtil.convert(request, User.class);
-        user.setPassword(EncryptUtil.getEncryptedPassword(user.getUsername()));
-        userDao.add(user);
-        return CommonResult.success();
+        user.setPassword(EncryptUtil.getEncryptedPassword(user.getUsername(), user.getPassword()));
+        user.setCreateTime(DateUtil.currentDate());
+        Long id = userDao.add(user);
+        return CommonResult.success(id);
     }
 
     @Override
-    public CommonResult update(Integer id, UserAddRequest request) {
-        logger.info("更新用户, 用户id: {}, 用户信息: {}", id, request.toString());
+    public CommonResult update(Long id, UserAddRequest request) {
+        logger.info("UserServiceImpl  更新用户, 用户id: {}, 用户信息: {}", id, request.toString());
         User user = ConvertUtil.convert(request, User.class);
         user.setId(id);
+        user.setUpdateTime(DateUtil.currentDate());
+        if (!StringUtils.isEmpty(request.getPassword())) {
+            user.setPassword(EncryptUtil.getEncryptedPassword(request.getUsername(), request.getPassword()));
+        }
         userDao.updateById(user);
         return CommonResult.success();
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
-    public CommonResult delete(List<Integer> ids) {
-        logger.info("删除用户,用户id列表: {}", Arrays.toString(ids.toArray()));
-        userDao.deleteByIds(ids);
-        return CommonResult.success();
+    public CommonResult delete(List<Long> ids) {
+        logger.info("UserServiceImpl  删除用户,用户id列表: {}", Arrays.toString(ids.toArray()));
+        //删除帐号对应的员工信息
+        List<Long> userDetailIds = ids.stream().map(id -> {
+            User user = userDao.findById(id);
+            return user.getUserDetailId();
+        }).collect(Collectors.toList());
+        userDetailDao.deleteByIds(userDetailIds);
+        //删除用户帐号
+        int rows = userDao.deleteByIds(ids);
+        return CommonResult.success(rows);
     }
 
     @Override
-    public CommonResult findByUserNameOrName(UserQueryRequest request) {
+    public CommonResult findByUsername(UserQueryRequest request) {
+        logger.info("UserServiceImpl  查询用户, 用户名: {}", request.getUsername());
         PageHelper.startPage(request.getPage().getCurrentPage(),
                 request.getPage().getPageSize());
         List<User> users = null;
-        if (StringUtils.isEmpty(request.getUsername()) &&
-                StringUtils.isEmpty(request.getName())) {
+        if (StringUtils.isEmpty(request.getUsername())) {
             users = userDao.findAll();
         } else {
-            users = userDao.findByUsernameOrName(request.getUsername(),
-                    request.getName());
+            users = userDao.findByUsername(request.getUsername());
         }
         List<UserResponse> userResponses = users.stream().map(user -> {
             UserResponse response = ConvertUtil.convert(user, UserResponse.class);
             return response;
         }).collect(Collectors.toList());
         PageInfo<User> pageInfo = new PageInfo<>(users);
-        return PageCommonResult.success((int)pageInfo.getTotal(),userResponses);
+        return PageCommonResult.success((int) pageInfo.getTotal(), userResponses);
     }
 
     @Override
     public CommonResult findByToken(String token) {
+        logger.info("UserServiceImpl  查询用户, token: {}", token);
         String userInfo = tokenDao.getUserInfoByToken(token);
         User user = JsonUtil.jsonToObject(userInfo, User.class);
         UserResponse response = ConvertUtil.convert(user, UserResponse.class);
+        logger.info("=====UserResponse: {}", response.toString());
         return CommonResult.success(response);
     }
 }

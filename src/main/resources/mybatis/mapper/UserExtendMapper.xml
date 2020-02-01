@@ -2,51 +2,33 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.edu.scau.employee.mapper.UserExtendMapper">
     <resultMap id="BaseResultMap" type="cn.edu.scau.employee.entity.User">
-        <id column="id" jdbcType="INTEGER" property="id"/>
+        <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="username" jdbcType="VARCHAR" property="username"/>
-        <result column="name" jdbcType="VARCHAR" property="name"/>
-        <result column="gender" jdbcType="INTEGER" property="gender"/>
         <result column="password" jdbcType="VARCHAR" property="password"/>
-        <result column="birthday" jdbcType="TIMESTAMP" property="birthday"/>
-        <result column="hiredate" jdbcType="TIMESTAMP" property="hiredate"/>
-        <result column="phone" jdbcType="VARCHAR" property="phone"/>
-        <result column="email" jdbcType="VARCHAR" property="email"/>
-        <result column="address" jdbcType="VARCHAR" property="address"/>
-        <result column="photo" jdbcType="VARCHAR" property="photo"/>
-        <result column="education" jdbcType="VARCHAR" property="education"/>
-        <result column="dept_id" jdbcType="INTEGER" property="deptId"/>
-        <result column="role_id" jdbcType="INTEGER" property="roleId"/>
+        <result column="role_id" jdbcType="BIGINT" property="roleId"/>
+        <result column="user_detail_id" jdbcType="BIGINT" property="userDetailId"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id, username, name, gender, password, birthday, hiredate, phone, email, address, 
-    photo, education, dept_id, role_id
-  </sql>
+    id, username, password, role_id, user_detail_id, create_time, update_time
+    </sql>
 
     <select id="selectByUsername" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from user
-        where username = #{username,jdbcType=VARCHAR}
+        <where>
+            <if test="null != username and username != ''">
+                and locate(#{username, jdbcType=VARCHAR}, username)
+            </if>
+        </where>
     </select>
 
     <select id="selectAll" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from user
-    </select>
-
-    <select id="selectByUsernameOrName" resultMap="BaseResultMap">
-        select
-        <include refid="Base_Column_List"/>
-        from user
-        <where>
-            <if test="username != null and username != ''">
-                and username like concat('%',#{username,jdbcType=VARCHAR},'%')
-            </if>
-            <if test="name != null and name != ''">
-                and name like concat('%',#{name,jdbcType=VARCHAR},'%')
-            </if>
-        </where>
     </select>
 
     <delete id="deleteByIds" parameterType="java.util.List">
@@ -56,4 +38,13 @@
             #{id,jdbcType=INTEGER}
         </foreach>
     </delete>
+
+    <update id="updateByRoleIds">
+        update user
+        set role_id = #{roleId}
+        where role_id in
+        <foreach collection="roleIds" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </update>
 </mapper>

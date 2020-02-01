@@ -1,6 +1,5 @@
 package cn.edu.scau.employee.dao;
 
-import cn.edu.scau.employee.entity.Resource;
 import cn.edu.scau.employee.entity.Role;
 import cn.edu.scau.employee.mapper.RoleExtendMapper;
 import cn.edu.scau.employee.mapper.RoleMapper;
@@ -25,5 +24,22 @@ public class RoleDao {
 
     public List<Role> findAll() {
         return roleExtendMapper.selectAll();
+    }
+
+    public List<Role> findByName(String name) {
+        return roleExtendMapper.selectByName(name);
+    }
+
+    public int deleteByIds(List<Long> ids) {
+        return roleExtendMapper.deleteByIds(ids);
+    }
+
+    public Long add(Role role) {
+        roleMapper.insert(role);
+        return role.getId();
+    }
+
+    public int updateById(Role role) {
+        return roleMapper.updateById(role);
     }
 }

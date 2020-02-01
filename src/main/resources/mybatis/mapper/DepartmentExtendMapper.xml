@@ -2,9 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="cn.edu.scau.employee.mapper.DepartmentExtendMapper">
     <resultMap id="BaseResultMap" type="cn.edu.scau.employee.entity.Department">
-        <id column="id" jdbcType="INTEGER" property="id"/>
+        <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="name" jdbcType="VARCHAR" property="name"/>
-        <result column="create_time" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
     </resultMap>
@@ -16,5 +16,24 @@
         select
         <include refid="Base_Column_List"/>
         from department
+    </select>
+
+    <delete id="deleteByIds" parameterType="java.util.List">
+        delete from department
+        where id in
+        <foreach collection="list" open="(" separator="," close=")" item="id">
+            #{id, jdbcType=BIGINT}
+        </foreach>
+    </delete>
+
+    <select id="findByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from department
+        <where>
+            <if test="name != null and name != ''">
+                and locate(#{name, jdbcType=VARCHAR}, name)
+            </if>
+        </where>
     </select>
 </mapper>

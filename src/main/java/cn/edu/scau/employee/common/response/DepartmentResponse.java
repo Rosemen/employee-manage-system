@@ -16,7 +16,7 @@ import java.util.Date;
 public class DepartmentResponse {
 
     @ApiModelProperty(value = "部门id")
-    private Integer id;
+    private Long id;
 
     @ApiModelProperty(value = "部门名称")
     private String name;

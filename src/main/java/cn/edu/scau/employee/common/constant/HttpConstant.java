@@ -16,4 +16,9 @@ public class HttpConstant {
      * 响应类型
      */
     public static final String CONTENT_TYPE = "application/json";
+
+    /**
+     * 系统请求
+     */
+    public static final String SYSTEM_URL = "/";
 }

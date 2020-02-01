@@ -25,7 +25,7 @@ public interface RoleMapper {
      * @param id
      * @return
      */
-    int deleteById(Integer id);
+    int deleteById(Long id);
 
     /**
      * 更新角色
@@ -41,5 +41,5 @@ public interface RoleMapper {
      * @param id
      * @return
      */
-    Role selectById(Integer id);
+    Role selectById(Long id);
 }

@@ -15,9 +15,9 @@ import java.util.Date;
 @Data
 public class RoleResource{
 
-    private Integer roleId;
+    private Long roleId;
 
-    private Integer resourceId;
+    private Long resourceId;
 
     private Date createTime;
 

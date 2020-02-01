@@ -1,13 +1,30 @@
 package cn.edu.scau.employee.service.impl;
 
+import cn.edu.scau.common.result.CommonResult;
+import cn.edu.scau.common.result.PageCommonResult;
+import cn.edu.scau.common.util.ConvertUtil;
+import cn.edu.scau.common.util.DateUtil;
+import cn.edu.scau.common.util.ObjectUtil;
+import cn.edu.scau.employee.common.request.ResourceAddRequest;
+import cn.edu.scau.employee.common.request.ResourceQueryRequest;
+import cn.edu.scau.employee.common.response.ResourceResponse;
 import cn.edu.scau.employee.dao.ResourceDao;
 import cn.edu.scau.employee.dao.RoleResourceDao;
 import cn.edu.scau.employee.entity.Resource;
 import cn.edu.scau.employee.entity.RoleResource;
 import cn.edu.scau.employee.service.ResourceService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -19,6 +36,8 @@ import java.util.stream.Collectors;
 @Service
 public class ResourceServiceImpl implements ResourceService {
 
+    private static final Logger logger = LoggerFactory.getLogger(ResourceServiceImpl.class);
+
     @Autowired
     private ResourceDao resourceDao;
 
@@ -26,12 +45,127 @@ public class ResourceServiceImpl implements ResourceService {
     private RoleResourceDao roleResourceDao;
 
     @Override
-    public List<Resource> findByRoleId(Integer roleId) {
+    public List<Resource> findByRoleId(Long roleId) {
+        logger.info("ResourceServiceImpl...  查询资源,角色id:{}", roleId);
         List<RoleResource> roleResources = roleResourceDao.selectByRoleId(roleId);
         List<Resource> resources = roleResources.stream().map(roleResource -> {
-            Resource resource = resourceDao.selectById(roleResource.getResourceId());
+            Resource resource = resourceDao.findById(roleResource.getResourceId());
             return resource;
         }).collect(Collectors.toList());
         return resources;
+    }
+
+    @Override
+    public CommonResult findByParentId(Long parentId) {
+        logger.info("ResourceServiceImpl...  查询资源, 资源父id:{}", parentId);
+        List<ResourceResponse> responses = this.getResourceResponses(parentId);
+        return CommonResult.success(responses);
+    }
+
+    @Override
+    public CommonResult findByName(ResourceQueryRequest request) {
+        logger.info("ResourceServiceImpl...  查询资源, 请求参数:{}", request.toString());
+        PageHelper.startPage(request.getPage().getCurrentPage(),
+                request.getPage().getPageSize());
+        List<Resource> resources = resourceDao.findByName(request.getMenuName());
+        List<ResourceResponse> responses = resources.stream().map(resource -> {
+            ResourceResponse response = ConvertUtil.convert(resource, ResourceResponse.class);
+            return response;
+        }).collect(Collectors.toList());
+        PageInfo<Resource> pageInfo = new PageInfo<>(resources);
+        return PageCommonResult.success((int) pageInfo.getTotal(), responses);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public CommonResult add(ResourceAddRequest request) {
+        //设置父节点为非叶子节点
+        Date currentDate = DateUtil.currentDate();
+        Long parentId = request.getParentId();
+        Resource parentResource = resourceDao.findById(parentId);
+        if (!ObjectUtil.isEmpty(parentResource)) {
+            parentResource.setLeaf(false);
+            parentResource.setUpdateDate(currentDate);
+            resourceDao.updateById(parentResource);
+        }
+        //添加资源
+        int num = resourceDao.getSubResourceNum(parentId);
+        Resource resource = ConvertUtil.convert(request, Resource.class);
+        resource.setId(parentId * 10 + num + 1);
+        resource.setCreateDate(currentDate);
+        resource.setUpdateDate(currentDate);
+        resource.setLeaf(true);
+        Long resourceId = resourceDao.add(resource);
+        return CommonResult.success(resourceId);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public CommonResult deleteByIds(List<Long> ids) {
+        logger.info("删除资源  资源id列表:{}", Arrays.toString(ids.toArray()));
+        //获取子资源id列表
+        List<Long> subIds = resourceDao.findIdByParentIds(ids);
+        //剔除重复id
+        if (subIds != null && subIds.size() > 0) {
+            logger.info("删除资源 子资源id列表: {}", Arrays.toString(subIds.toArray()));
+            ids.removeAll(subIds);
+            ids.addAll(subIds);
+        }
+        //删除资源
+        int rows = resourceDao.deleteByIds(ids);
+        //删除角色资源记录
+        roleResourceDao.deleteByResourceIds(ids);
+        return CommonResult.success(rows);
+    }
+
+    @Override
+    public CommonResult findAll() {
+        List<Resource> resources = resourceDao.findAll();
+        List<ResourceResponse> responses = resources.stream().map(resource -> {
+            return ConvertUtil.convert(resource, ResourceResponse.class);
+        }).collect(Collectors.toList());
+        return CommonResult.success(responses);
+    }
+
+    @Override
+    public CommonResult update(Long id, ResourceAddRequest request) {
+        logger.info("更新资源  资源id: {}, 资源: {}", id, request.toString());
+        Resource resource = resourceDao.findById(id);
+        if (!ObjectUtil.isEmpty(resource)) {
+            //非叶子节点并且要修改url,需要级联修改子节点的url
+            if (!resource.isLeaf() && !resource.getUrl().equals(request.getUrl())) {
+                List<ResourceResponse> responses = getResourceResponses(id);
+                for (ResourceResponse response : responses) {
+                    String newUrl = response.getUrl().replace(resource.getUrl(), request.getUrl());
+                    resourceDao.updateUrlById(newUrl, response.getId());
+                }
+            }
+            resource.setMenuName(request.getMenuName());
+            resource.setUrl(request.getUrl());
+            resource.setParentId(request.getParentId());
+            resource.setRemark(request.getRemark());
+            resourceDao.updateById(resource);
+        }
+        return CommonResult.success();
+    }
+
+    /**
+     * 递归获取子资源列表
+     *
+     * @param parentId
+     * @return
+     */
+    private List<ResourceResponse> getResourceResponses(Long parentId) {
+        List<Resource> resources = resourceDao.findByParentId(parentId);
+        List<ResourceResponse> responses = resources.stream().map(resource -> {
+            ResourceResponse response = ConvertUtil.convert(resource, ResourceResponse.class);
+            if (!resource.isLeaf()) {
+                response.setChildren(this.getResourceResponses(resource.getId()));
+            } else {
+                response.setChildren(Collections.emptyList());
+            }
+            return response;
+        }).collect(Collectors.toList());
+        return responses;
     }
 }

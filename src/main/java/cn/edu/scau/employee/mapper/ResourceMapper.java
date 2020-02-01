@@ -23,7 +23,7 @@ public interface ResourceMapper {
      * @param id
      * @return
      */
-    int deleteById(Integer id);
+    int deleteById(Long id);
 
     /**
      * 修改资源
@@ -39,5 +39,5 @@ public interface ResourceMapper {
      * @param id
      * @return
      */
-    Resource selectById(Integer id);
+    Resource selectById(Long id);
 }

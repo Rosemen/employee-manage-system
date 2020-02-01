@@ -6,7 +6,6 @@ import cn.edu.scau.employee.dao.UserDao;
 import cn.edu.scau.employee.entity.Resource;
 import cn.edu.scau.employee.entity.User;
 import cn.edu.scau.employee.service.ResourceService;
-import cn.edu.scau.employee.service.UserService;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -58,14 +57,14 @@ public class UserRealm extends AuthorizingRealm {
         String username = (String) authenticationToken.getPrincipal();
         logger.info("用户: {} 登录校验中", username);
         userDao.findByUsername(username);
-        User user = userDao.findByUsername(username);
-        if (ObjectUtil.isEmpty(user)) {
+        List<User> users = userDao.findByUsername(username);
+        if (ObjectUtil.isEmpty(users) || users.size() <= 0) {
             throw new UnauthenticatedException();
         }
         ByteSource salt = ByteSource.Util.bytes(username);
         SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
-                user,
-                user.getPassword(),
+                users.get(0),
+                users.get(0).getPassword(),
                 salt,
                 getName()
         );

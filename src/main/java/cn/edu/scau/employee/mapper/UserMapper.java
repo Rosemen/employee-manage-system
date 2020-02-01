@@ -3,8 +3,6 @@ package cn.edu.scau.employee.mapper;
 
 import cn.edu.scau.employee.entity.User;
 
-import java.util.List;
-
 /**
  *
  * @author chen
@@ -26,7 +24,7 @@ public interface UserMapper {
      * @param id
      * @return
      */
-    int deleteById(Integer id);
+    int deleteById(Long id);
 
     /**
      * 更新用户
@@ -42,6 +40,6 @@ public interface UserMapper {
      * @param id
      * @return
      */
-    User selectById(Integer id);
+    User selectById(Long id);
 
 }

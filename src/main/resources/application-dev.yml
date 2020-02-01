@@ -12,6 +12,12 @@ spring:
     host: 121.196.223.21
     port: 6379
     password: 445221
+    lettuce:
+      pool:
+        max-idle: 30
+        max-active: 8
+        max-wait: 10000ms
+        min-idle: 10
     token:
       prefix: "employee-manage-system"
   main:
@@ -76,3 +82,4 @@ management:
     web:
       exposure:
         include: "*"
+

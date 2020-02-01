@@ -32,14 +32,6 @@ public interface UserService {
     CommonResult logout(String token);
 
     /**
-     * 根据用户名查询用户
-     *
-     * @param username
-     * @return
-     */
-    CommonResult findByUserName(String username);
-
-    /**
      * 导入用户excel文件
      *
      * @param bytes
@@ -69,7 +61,7 @@ public interface UserService {
      * @param request
      * @return
      */
-    CommonResult update(Integer id, UserAddRequest request);
+    CommonResult update(Long id, UserAddRequest request);
 
     /**
      * 删除用户
@@ -77,15 +69,15 @@ public interface UserService {
      * @param ids
      * @return
      */
-    CommonResult delete(List<Integer> ids);
+    CommonResult delete(List<Long> ids);
 
     /**
-     * 根据id列表删除
+     * 根据用户名查询
      *
      * @param request
      * @return
      */
-    CommonResult findByUserNameOrName(UserQueryRequest request);
+    CommonResult findByUsername(UserQueryRequest request);
 
     /**
      * 根据token查询用户信息

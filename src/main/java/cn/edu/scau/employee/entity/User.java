@@ -13,31 +13,17 @@ import java.util.Date;
 @Data
 public class User {
 
-    private Integer id;
+    private Long id;
 
     private String username;
 
-    private String name;
-
-    private Integer gender;
-
     private String password;
 
-    private Date birthday;
+    private Long roleId;
 
-    private Date hiredate;
+    private Long userDetailId;
 
-    private String phone;
+    private Date createTime;
 
-    private String email;
-
-    private String address;
-
-    private String photo;
-
-    private String education;
-
-    private Integer deptId;
-
-    private Integer roleId;
+    private Date updateTime;
 }

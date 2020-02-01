@@ -25,4 +25,21 @@ public class DepartmentDao {
     public List<Department> findAll() {
         return departmentExtendMapper.selectAll();
     }
+
+    public int deleteByIds(List<Long> ids) {
+        return departmentExtendMapper.deleteByIds(ids);
+    }
+
+    public Long add(Department department) {
+        departmentMapper.insert(department);
+        return department.getId();
+    }
+
+    public int updateById(Department department) {
+        return departmentMapper.updateById(department);
+    }
+
+    public List<Department> findByName(String name) {
+        return departmentExtendMapper.findByName(name);
+    }
 }

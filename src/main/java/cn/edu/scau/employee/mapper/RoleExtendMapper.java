@@ -17,4 +17,20 @@ public interface RoleExtendMapper {
      * @return
      */
     List<Role> selectAll();
+
+    /**
+     * 根据角色名模糊查询
+     *
+     * @param name
+     * @return
+     */
+    List<Role> selectByName(String name);
+
+    /**
+     * 根据id列表删除
+     *
+     * @param ids
+     * @return
+     */
+    int deleteByIds(List<Long> ids);
 }

@@ -16,41 +16,23 @@ import java.util.Date;
 public class UserResponse {
 
     @ApiModelProperty(value = "id主键")
-    private Integer id;
+    private Long id;
 
-    @ApiModelProperty(value = "工号")
+    @ApiModelProperty(value = "用户名")
     private String username;
 
-    @ApiModelProperty(value = "真实姓名")
-    private String name;
-
-    @ApiModelProperty(value = "性别")
-    private Integer gender;
-
-    @ApiModelProperty(value = "出生日期")
-    private Date birthday;
-
-    @ApiModelProperty(value = "入职日期")
-    private Date hiredate;
-
-    @ApiModelProperty(value = "手机号码")
-    private String phone;
-
-    @ApiModelProperty(value = "邮箱")
-    private String email;
-
-    @ApiModelProperty(value = "住址")
-    private String address;
-
-    @ApiModelProperty(value = "照片")
-    private String photo;
-
-    @ApiModelProperty(value = "照片")
-    private String education;
-
-    @ApiModelProperty(value = "部门id")
-    private Integer deptId;
+    @ApiModelProperty(value = "密码")
+    private String password;
 
     @ApiModelProperty(value = "角色id")
-    private Integer roleId;
+    private Long roleId;
+
+    @ApiModelProperty(value = "员工详细信息id")
+    private Long userDetailId;
+
+    @ApiModelProperty(value = "创建时间")
+    private Date createTime;
+
+    @ApiModelProperty(value = "修改时间")
+    private Date updateTime;
 }

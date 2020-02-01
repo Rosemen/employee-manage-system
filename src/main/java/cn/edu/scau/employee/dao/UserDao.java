@@ -21,27 +21,32 @@ public class UserDao {
     @Autowired
     private UserExtendMapper userExtendMapper;
 
-    public User findByUsername(String username) {
-        return userExtendMapper.selectByUsername(username);
-    }
-
     public int updateById(User user) {
         return userMapper.updateById(user);
     }
 
-    public int add(User user) {
-        return userMapper.insert(user);
+    public Long add(User user) {
+        userMapper.insert(user);
+        return user.getId();
     }
 
-    public int deleteByIds(List<Integer> ids) {
+    public int deleteByIds(List<Long> ids) {
         return userExtendMapper.deleteByIds(ids);
     }
 
-    public List<User> findByUsernameOrName(String username, String name) {
-        return userExtendMapper.selectByUsernameOrName(username, name);
+    public List<User> findByUsername(String username) {
+        return userExtendMapper.selectByUsername(username);
     }
 
     public List<User> findAll() {
         return userExtendMapper.selectAll();
+    }
+
+    public User findById(Long id) {
+        return userMapper.selectById(id);
+    }
+
+    public int updateByRoleIds(Long roleId, List<Long> roleIds) {
+        return userExtendMapper.updateByRoleIds(roleId, roleIds);
     }
 }

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.scau.employee.mapper.ResourceExtendMapper">
+    <resultMap id="BaseResultMap" type="cn.edu.scau.employee.entity.Resource">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="menu_name" jdbcType="VARCHAR" property="menuName"/>
+        <result column="url" jdbcType="VARCHAR" property="url"/>
+        <result column="parent_id" jdbcType="BIGINT" property="parentId"/>
+        <result column="create_date" jdbcType="TIMESTAMP" property="createDate"/>
+        <result column="update_date" jdbcType="TIMESTAMP" property="updateDate"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="leaf" jdbcType="TINYINT" property="leaf"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, menu_name, url, parent_id, create_date, update_date, remark, leaf
+  </sql>
+
+    <select id="selectByParentId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from resource
+        where parent_id = #{parentId,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from resource
+        <where>
+            <if test="null != name and name != ''">
+                and locate(#{name, jdbcType=VARCHAR},menu_name)
+            </if>
+        </where>
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from resource
+    </select>
+
+    <select id="selectCountByParentId" parameterType="java.lang.Long" resultType="java.lang.Integer">
+        select
+        count(id)
+        from resource
+        where parent_id = #{parentId,jdbcType=BIGINT}
+    </select>
+
+    <select id="selectIdByParentIds" parameterType="java.util.List" resultType="java.lang.Long">
+        select
+        id
+        from resource
+        where parent_id in
+        <foreach collection="list" item="parentId" open="(" separator="," close=")">
+            #{parentId, jdbcType=BIGINT}
+        </foreach>
+    </select>
+
+    <delete id="deleteByIds" parameterType="java.util.List">
+        delete from resource
+        where id in
+        <foreach collection="list" item="id" open="(" separator="," close=")">
+            #{id, jdbcType=BIGINT}
+        </foreach>
+    </delete>
+
+    <update id="updateUrlById">
+        update resource
+        set url = #{url}
+        where id = #{id}
+    </update>
+</mapper>

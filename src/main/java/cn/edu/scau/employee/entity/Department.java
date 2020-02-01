@@ -5,15 +5,14 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- *
  * @author chen.jiale
  * @description 部门实体类
- * @date  2019/12/03
+ * @date 2019/12/03
  */
 @Data
-public class Department{
+public class Department {
 
-    private Integer id;
+    private Long id;
 
     private String name;
 

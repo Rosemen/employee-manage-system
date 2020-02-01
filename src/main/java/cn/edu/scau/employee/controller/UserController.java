@@ -15,7 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
-import java.util.List;
 
 /**
  * @author chen.jiale
@@ -72,14 +71,14 @@ public class UserController {
     @ApiOperation(value = "修改用户")
     @ApiImplicitParam(name = "employee-token", value = "用于登录认证的token", paramType = "header", dataType = "string")
     @RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)
-    public CommonResult update(@PathVariable("id") Integer id, @RequestBody UserAddRequest request) {
+    public CommonResult update(@PathVariable("id") Long id, @RequestBody UserAddRequest request) {
         return userService.update(id, request);
     }
 
     @ApiOperation(value = "删除用户")
     @ApiImplicitParam(name = "employee-token", value = "用于登录认证的token", paramType = "header", dataType = "string")
     @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
-    public CommonResult delete(@RequestParam Integer[] ids) {
+    public CommonResult delete(@RequestParam Long[] ids) {
         return userService.delete(Arrays.asList(ids));
     }
 
@@ -87,7 +86,7 @@ public class UserController {
     @ApiImplicitParam(name = "employee-token", value = "用于登录认证的token", paramType = "header", dataType = "string")
     @RequestMapping(value = "/query", method = RequestMethod.POST)
     public CommonResult query(@RequestBody UserQueryRequest request) {
-        return userService.findByUserNameOrName(request);
+        return userService.findByUsername(request);
     }
 
     @ApiOperation(value = "根据token查询用户")
