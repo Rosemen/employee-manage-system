@@ -14,10 +14,11 @@
         <result column="education" jdbcType="VARCHAR" property="education"/>
         <result column="dept_id" jdbcType="BIGINT" property="deptId"/>
         <result column="emp_no" jdbcType="BIGINT" property="empNo"/>
+        <result column="position" jdbcType="VARCHAR" property="position"/>
     </resultMap>
     <sql id="Base_Column_List">
     id, name, gender, birthday, hiredate, phone, email, address, photo, education, dept_id, 
-    emp_no
+    emp_no, position
   </sql>
 
     <delete id="deleteByIds" parameterType="java.util.List">
@@ -36,4 +37,21 @@
             #{deptId}
         </foreach>
     </update>
+
+    <select id="selectByName" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user_detail
+        <where>
+            <if test="null != name and name != ''">
+                and locate(#{name, jdbcType=VARCHAR}, name)
+            </if>
+        </where>
+    </select>
+
+    <select id="selectCount" resultType="int">
+        select
+        count(id)
+        from user_detail
+    </select>
 </mapper>

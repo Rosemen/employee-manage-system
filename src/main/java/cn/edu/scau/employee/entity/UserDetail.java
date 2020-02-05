@@ -5,13 +5,13 @@ import lombok.Data;
 import java.util.Date;
 
 /**
- *
  * @author chen.jiale
  * @date 2020/01/21
  * @description
  */
 @Data
 public class UserDetail {
+
     private Long id;
 
     private String name;
@@ -35,4 +35,6 @@ public class UserDetail {
     private Long deptId;
 
     private Long empNo;
+
+    private String position;
 }

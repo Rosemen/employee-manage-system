@@ -1,5 +1,6 @@
 package cn.edu.scau.employee.mapper;
 
+import cn.edu.scau.employee.entity.UserDetail;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -22,11 +23,25 @@ public interface UserDetailExtendMapper {
     /**
      * 更新用户的部门id
      *
-     *
      * @param newDeptId
      * @param deptIds
      * @return
      */
     int updateByDeptIds(@Param("newDeptId") Long newDeptId,
                         @Param("deptIds") List<Long> deptIds);
+
+    /**
+     * 根据姓名查询
+     *
+     * @param name
+     * @return
+     */
+    List<UserDetail> selectByName(String name);
+
+    /**
+     * 获取员工总数
+     *
+     * @return
+     */
+    int selectCount();
 }

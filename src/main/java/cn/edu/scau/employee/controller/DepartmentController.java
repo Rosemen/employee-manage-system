@@ -33,7 +33,7 @@ public class DepartmentController {
         return departmentService.findByName(request);
     }
 
-    @ApiOperation(value = "分页查询所有部门信息")
+    @ApiOperation(value = "查询所有部门信息")
     @ApiImplicitParam(name = "employee-token", value = "用于登录认证的token", paramType = "header", dataType = "string")
     @RequestMapping(value = "/query", method = RequestMethod.GET)
     public CommonResult query() {

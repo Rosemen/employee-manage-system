@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.scau.employee.mapper.AttendenceMapper">
+    <resultMap id="BaseResultMap" type="cn.edu.scau.employee.entity.Attendence">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="emp_no" jdbcType="BIGINT" property="empNo"/>
+        <result column="start_time" jdbcType="TIMESTAMP" property="startTime"/>
+        <result column="end_time" jdbcType="TIMESTAMP" property="endTime"/>
+        <result column="late" jdbcType="BIT" property="late" />
+        <result column="leave_early" jdbcType="BIT" property="leaveEarly" />
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, emp_no, start_time, end_time, late, leave_early
+    </sql>
+
+    <select id="selectById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from attendence
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+
+    <delete id="deleteById" parameterType="java.lang.Long">
+    delete from attendence
+    where id = #{id,jdbcType=BIGINT}
+    </delete>
+
+    <insert id="insert" parameterType="cn.edu.scau.employee.entity.Attendence">
+        insert into attendence
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="empNo != null">
+                emp_no,
+            </if>
+            <if test="startTime != null">
+                start_time,
+            </if>
+            <if test="endTime != null">
+                end_time,
+            </if>
+            <if test="late != null">
+                late,
+            </if>
+            <if test="leaveEarly != null">
+                leave_early,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=BIGINT},
+            </if>
+            <if test="empNo != null">
+                #{empNo,jdbcType=BIGINT},
+            </if>
+            <if test="startTime != null">
+                #{startTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="endTime != null">
+                #{endTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="late != null">
+                #{late,jdbcType=BIT},
+            </if>
+            <if test="leaveEarly != null">
+                #{leaveEarly,jdbcType=BIT},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateById" parameterType="cn.edu.scau.employee.entity.Attendence">
+        update attendence
+        <set>
+            <if test="empNo != null">
+                emp_no = #{empNo,jdbcType=BIGINT},
+            </if>
+            <if test="startTime != null">
+                start_time = #{startTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="endTime != null">
+                end_time = #{endTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="late != null">
+                late = #{late,jdbcType=BIT},
+            </if>
+            <if test="leaveEarly != null">
+                leave_early = #{leaveEarly,jdbcType=BIT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+</mapper>

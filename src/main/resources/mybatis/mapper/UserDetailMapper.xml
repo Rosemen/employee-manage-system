@@ -14,10 +14,11 @@
     <result column="education" jdbcType="VARCHAR" property="education" />
     <result column="dept_id" jdbcType="BIGINT" property="deptId" />
     <result column="emp_no" jdbcType="BIGINT" property="empNo" />
+    <result column="position" jdbcType="VARCHAR" property="position" />
   </resultMap>
   <sql id="Base_Column_List">
     id, name, gender, birthday, hiredate, phone, email, address, photo, education, dept_id, 
-    emp_no
+    emp_no, position
   </sql>
 
   <select id="selectById" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -32,7 +33,8 @@
     where id = #{id,jdbcType=BIGINT}
   </delete>
 
-  <insert id="insert" parameterType="cn.edu.scau.employee.entity.UserDetail">
+  <insert id="insert" parameterType="cn.edu.scau.employee.entity.UserDetail" useGeneratedKeys="true"
+  keyProperty="id">
     insert into user_detail
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -70,6 +72,9 @@
       </if>
       <if test="empNo != null">
         emp_no,
+      </if>
+      <if test="position != null">
+        position,
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -109,6 +114,9 @@
       <if test="empNo != null">
         #{empNo,jdbcType=BIGINT},
       </if>
+      <if test="position != null">
+        #{position,jdbcType=VARCHAR},
+      </if>
     </trim>
   </insert>
 
@@ -147,6 +155,9 @@
       </if>
       <if test="empNo != null">
         emp_no = #{empNo,jdbcType=BIGINT},
+      </if>
+      <if test="position != null">
+        position = #{position,jdbcType=VARCHAR},
       </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
