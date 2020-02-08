@@ -54,4 +54,10 @@
         count(id)
         from user_detail
     </select>
+
+    <select id="selectAllEmpNos" resultType="java.lang.Long">
+        select
+        emp_no
+        from user_detail
+    </select>
 </mapper>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.scau.employee.mapper.BusinessTripExtendMapper">
+    <resultMap id="BaseResultMap" type="cn.edu.scau.employee.entity.BusinessTrip">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="emp_no" jdbcType="BIGINT" property="empNo"/>
+        <result column="start_time" jdbcType="TIMESTAMP" property="startTime"/>
+        <result column="end_time" jdbcType="TIMESTAMP" property="endTime"/>
+        <result column="place" jdbcType="VARCHAR" property="place"/>
+        <result column="remark" jdbcType="VARCHAR" property="remark"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    id, emp_no, start_time, end_time, place, remark
+    </sql>
+
+    <select id="selectByEmpNoAndMonth" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from business_trip
+        where
+        emp_no = #{empNo}
+        and (month(start_time) = #{month} or month(end_time) = #{month})
+        and (year(start_time) = #{year} or year(start_time) = #{year})
+    </select>
+
+    <select id="selectByEmpNoAndQuarter" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from business_trip
+        where
+        emp_no = #{empNo}
+        and (quarter(start_time) = #{quarter} or quarter(end_time) = #{quarter})
+        and (year(start_time) = #{year} or year(start_time) = #{year})
+    </select>
+</mapper>

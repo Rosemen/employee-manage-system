@@ -1,0 +1,38 @@
+package cn.edu.scau.employee.mapper;
+
+import cn.edu.scau.employee.entity.Leaves;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+
+/**
+ * @author chen.jiale
+ * @date 2020/02/02
+ * @description 请假Mapper
+ */
+public interface LeavesExtendMapper {
+
+    /**
+     * 查询某员工某月的请假记录
+     *
+     * @param year
+     * @param month
+     * @param empNo
+     * @return
+     */
+    List<Leaves> selectByEmpNoAndMonth(@Param("year") Integer year,
+                                       @Param("month") Integer month,
+                                       @Param("empNo") Long empNo);
+
+    /**
+     * 查询某员工某年某季度的请假记录
+     *
+     * @param year
+     * @param quarter
+     * @param empNo
+     * @return
+     */
+    List<Leaves> selectByEmpNoAndQuarter(@Param("year") Integer year,
+                                         @Param("month") Integer quarter,
+                                         @Param("empNo") Long empNo);
+}

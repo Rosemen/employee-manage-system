@@ -44,4 +44,11 @@ public interface UserDetailExtendMapper {
      * @return
      */
     int selectCount();
+
+    /**
+     * 获取所有员工工号
+     *
+     * @return
+     */
+    List<Long> selectAllEmpNos();
 }

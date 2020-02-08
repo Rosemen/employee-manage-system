@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.edu.scau.employee.mapper.AttendenceMapper">
-    <resultMap id="BaseResultMap" type="cn.edu.scau.employee.entity.Attendence">
+<mapper namespace="cn.edu.scau.employee.mapper.AttendanceMapper">
+    <resultMap id="BaseResultMap" type="cn.edu.scau.employee.entity.Attendance">
         <id column="id" jdbcType="BIGINT" property="id"/>
         <result column="emp_no" jdbcType="BIGINT" property="empNo"/>
         <result column="start_time" jdbcType="TIMESTAMP" property="startTime"/>
         <result column="end_time" jdbcType="TIMESTAMP" property="endTime"/>
-        <result column="late" jdbcType="BIT" property="late" />
-        <result column="leave_early" jdbcType="BIT" property="leaveEarly" />
+        <result column="late" jdbcType="TINYINT" property="late"/>
+        <result column="leave_early" jdbcType="TINYINT" property="leaveEarly"/>
     </resultMap>
     <sql id="Base_Column_List">
     id, emp_no, start_time, end_time, late, leave_early
@@ -25,7 +25,7 @@
     where id = #{id,jdbcType=BIGINT}
     </delete>
 
-    <insert id="insert" parameterType="cn.edu.scau.employee.entity.Attendence">
+    <insert id="insert" parameterType="cn.edu.scau.employee.entity.Attendance">
         insert into attendence
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -61,15 +61,15 @@
                 #{endTime,jdbcType=TIMESTAMP},
             </if>
             <if test="late != null">
-                #{late,jdbcType=BIT},
+                #{late,jdbcType=TINYINT},
             </if>
             <if test="leaveEarly != null">
-                #{leaveEarly,jdbcType=BIT},
+                #{leaveEarly,jdbcType=TINYINT},
             </if>
         </trim>
     </insert>
 
-    <update id="updateById" parameterType="cn.edu.scau.employee.entity.Attendence">
+    <update id="updateById" parameterType="cn.edu.scau.employee.entity.Attendance">
         update attendence
         <set>
             <if test="empNo != null">
@@ -82,12 +82,13 @@
                 end_time = #{endTime,jdbcType=TIMESTAMP},
             </if>
             <if test="late != null">
-                late = #{late,jdbcType=BIT},
+                late = #{late,jdbcType=TINYINT},
             </if>
             <if test="leaveEarly != null">
-                leave_early = #{leaveEarly,jdbcType=BIT},
+                leave_early = #{leaveEarly,jdbcType=TINYINT},
             </if>
         </set>
         where id = #{id,jdbcType=BIGINT}
     </update>
+
 </mapper>

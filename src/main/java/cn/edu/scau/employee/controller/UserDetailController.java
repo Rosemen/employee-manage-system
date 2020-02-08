@@ -3,7 +3,6 @@ package cn.edu.scau.employee.controller;
 import cn.edu.scau.common.result.CommonResult;
 import cn.edu.scau.employee.common.request.UserDetailAddRequest;
 import cn.edu.scau.employee.common.request.UserDetailQueryRequest;
-import cn.edu.scau.employee.common.request.UserQueryRequest;
 import cn.edu.scau.employee.service.UserDetailService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;

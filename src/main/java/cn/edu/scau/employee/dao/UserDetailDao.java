@@ -47,4 +47,8 @@ public class UserDetailDao {
     public int updateById(UserDetail userDetail) {
         return userDetailMapper.updateById(userDetail);
     }
+
+    public List<Long> findAllEmpNos() {
+        return userDetailExtendMapper.selectAllEmpNos();
+    }
 }

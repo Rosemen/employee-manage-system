@@ -4,7 +4,7 @@ import cn.edu.scau.common.result.CommonResult;
 import cn.edu.scau.common.result.PageCommonResult;
 import cn.edu.scau.common.util.ConvertUtil;
 import cn.edu.scau.common.util.DateUtil;
-import cn.edu.scau.employee.common.constant.SystemConstant;
+import cn.edu.scau.employee.common.constant.EmpInfoConstant;
 import cn.edu.scau.employee.common.request.UserDetailAddRequest;
 import cn.edu.scau.employee.common.request.UserDetailQueryRequest;
 import cn.edu.scau.employee.common.response.UserDetailResponse;
@@ -84,9 +84,9 @@ public class UserDetailServiceImpl implements UserDetailService {
     }
 
     private Long generateEmpNo() {
-        RedisAtomicLong counter = new RedisAtomicLong(SystemConstant.EMP_INDEX, redisTemplate.getConnectionFactory());
+        RedisAtomicLong counter = new RedisAtomicLong(EmpInfoConstant.EMP_INDEX, redisTemplate.getConnectionFactory());
         long number = counter.incrementAndGet();
-        number += SystemConstant.MAX_NUMBER;
+        number += EmpInfoConstant.MAX_NUMBER;
         String prefix = DateUtil.dateToStr(new Date(), "yyyyMMdd");
         String suffix = (number + "").substring(1);
         String empNo = prefix + suffix;

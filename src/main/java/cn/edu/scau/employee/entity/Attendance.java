@@ -1,5 +1,7 @@
 package cn.edu.scau.employee.entity;
 
+import lombok.Data;
+
 import java.util.Date;
 
 /**
@@ -7,7 +9,8 @@ import java.util.Date;
  * @date 2020/02/02
  * @description 每日出勤表
  */
-public class Attendence {
+@Data
+public class Attendance {
 
     private Long id;
 
@@ -17,7 +20,7 @@ public class Attendence {
 
     private Date endTime;
 
-    private Boolean late;
+    private boolean late;
 
-    private Boolean leaveEarly;
+    private boolean leaveEarly;
 }
