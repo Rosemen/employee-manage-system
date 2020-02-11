@@ -48,13 +48,11 @@ public class AttendServiceImpl implements AttendService {
 
     @Override
     public CommonResult findByEmpNo(Long empNo) {
-        logger.info("查询考勤记录");
         return null;
     }
 
     @Override
     public CommonResult find(AttendQueryRequest request) {
-        logger.info("查询考勤记录  请求参数: {}", request.toString());
         List<Long> empNos = userDetailDao.findAllEmpNos();
         List<AttendResponse> responses = empNos.stream().map(empNo -> {
             AttendResponse response = new AttendResponse();

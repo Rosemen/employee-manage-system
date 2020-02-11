@@ -40,7 +40,6 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public CommonResult findAll() {
-        logger.info("DepartmentServiceImpl...  查询所有部门");
         List<Department> departments = departmentDao.findAll();
         List<DepartmentResponse> responses = departments.stream().map(department ->
                 ConvertUtil.convert(department, DepartmentResponse.class)
@@ -50,8 +49,6 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public CommonResult deleteByIds(List<Long> ids) {
-        logger.info("DepartmentServiceImpl...  删除部门, 部门id列表: {}",
-                Arrays.toString(ids.toArray()));
         int rows = departmentDao.deleteByIds(ids);
         //更新用户的部门信息
         userDetailDao.updateByDeptIds(ids);
@@ -60,7 +57,6 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public CommonResult add(DeptAddRequest request) {
-        logger.info("DepartmentServiceImpl...  添加部门, 部门信息: {}", request.toString());
         Department department = ConvertUtil.convert(request, Department.class);
         department.setCreateTime(DateUtil.currentDate());
         department.setUpdateTime(DateUtil.currentDate());
@@ -70,7 +66,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public CommonResult update(Long id, DeptAddRequest request) {
-        logger.info("DepartmentServiceImpl...  更新部门, 部门id: {}, 部门信息: {}", id, request.toString());
+
         Department department = ConvertUtil.convert(request, Department.class);
         department.setId(id);
         department.setUpdateTime(DateUtil.currentDate());
@@ -80,7 +76,6 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public CommonResult findByName(DeptQueryRequest request) {
-        logger.info("DepartmentServiceImpl...  分页查询部门, 查询条件:{}", request.toString());
         PageHelper.startPage(request.getPage().getCurrentPage(),
                 request.getPage().getPageSize());
         List<Department> departments = departmentDao.findByName(request.getName());

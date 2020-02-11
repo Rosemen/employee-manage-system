@@ -1,5 +1,7 @@
 package cn.edu.scau.employee.dao;
 
+import cn.edu.scau.employee.common.annotation.Log;
+import cn.edu.scau.employee.common.enums.ManageTypeEnum;
 import cn.edu.scau.employee.entity.User;
 import cn.edu.scau.employee.mapper.UserExtendMapper;
 import cn.edu.scau.employee.mapper.UserMapper;
@@ -15,21 +17,26 @@ import java.util.List;
  */
 @Component
 public class UserDao {
+
     @Autowired
     private UserMapper userMapper;
 
     @Autowired
     private UserExtendMapper userExtendMapper;
 
+    @Log(table = "t_user", type = 3)
     public int updateById(User user) {
-        return userMapper.updateById(user);
+        int rows = userMapper.updateById(user);
+        return rows;
     }
 
+    @Log(table = "t_user", type = 1)
     public Long add(User user) {
         userMapper.insert(user);
         return user.getId();
     }
 
+    @Log(table = "t_user", type = 2)
     public int deleteByIds(List<Long> ids) {
         return userExtendMapper.deleteByIds(ids);
     }
@@ -46,6 +53,7 @@ public class UserDao {
         return userMapper.selectById(id);
     }
 
+    @Log(table = "t_user", type = 3)
     public int updateByRoleIds(Long roleId, List<Long> roleIds) {
         return userExtendMapper.updateByRoleIds(roleId, roleIds);
     }

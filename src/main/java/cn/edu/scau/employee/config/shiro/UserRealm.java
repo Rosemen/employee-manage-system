@@ -1,11 +1,10 @@
 package cn.edu.scau.employee.config.shiro;
 
-import cn.edu.scau.common.result.CommonResult;
 import cn.edu.scau.common.util.ObjectUtil;
-import cn.edu.scau.employee.dao.UserDao;
+import cn.edu.scau.employee.dao.ShiroUserDao;
 import cn.edu.scau.employee.entity.Resource;
 import cn.edu.scau.employee.entity.User;
-import cn.edu.scau.employee.service.ResourceService;
+import cn.edu.scau.employee.service.ShiroResourceService;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -35,10 +34,10 @@ public class UserRealm extends AuthorizingRealm {
     private static final Logger logger = LoggerFactory.getLogger(UserRealm.class);
 
     @Autowired
-    private UserDao userDao;
+    private ShiroUserDao userDao;
 
     @Autowired
-    private ResourceService resourceService;
+    private ShiroResourceService resourceService;
 
     @Override
     protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principalCollection) {

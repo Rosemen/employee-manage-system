@@ -42,7 +42,6 @@ public class UserDetailServiceImpl implements UserDetailService {
 
     @Override
     public CommonResult findByName(UserDetailQueryRequest request) {
-        logger.info("员工信息查询  请求参数: {}", request.toString());
         PageHelper.startPage(request.getPage().getCurrentPage(),
                 request.getPage().getPageSize());
         List<UserDetail> userDetails = userDetailDao.findByName(request.getName());
@@ -56,7 +55,6 @@ public class UserDetailServiceImpl implements UserDetailService {
 
     @Override
     public CommonResult add(UserDetailAddRequest request) {
-        logger.info("添加员工信息  请求参数: {}", request.toString());
         UserDetail userDetail = ConvertUtil.convert(request, UserDetail.class);
         Long empNo = generateEmpNo();
         userDetail.setEmpNo(empNo);
@@ -69,14 +67,12 @@ public class UserDetailServiceImpl implements UserDetailService {
 
     @Override
     public CommonResult deleteByIds(List<Long> ids) {
-        logger.info("删除员工信息  请求参数: {}", Arrays.toString(ids.toArray()));
         int rows = userDetailDao.deleteByIds(ids);
         return CommonResult.success(rows);
     }
 
     @Override
     public CommonResult updateById(Long id, UserDetailAddRequest request) {
-        logger.info("更新员工信息  请求参数: {}", request.toString());
         UserDetail userDetail = ConvertUtil.convert(request, UserDetail.class);
         userDetail.setId(id);
         userDetailDao.updateById(userDetail);

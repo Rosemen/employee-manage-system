@@ -27,4 +27,16 @@ public class ManageRecord {
 
     private String methodName;
 
+    public static ManageRecord generate(String username, String manageType, String manageTable,
+                                        String serviceName, String methodName){
+        ManageRecord record = new ManageRecord();
+        record.setUsername(username);
+        record.setManageType(manageType);
+        record.setManageTable(manageTable);
+        record.setServiceName(serviceName);
+        record.setMethodName(methodName);
+        record.setManageDate(new Date());
+        return record;
+    }
+
 }

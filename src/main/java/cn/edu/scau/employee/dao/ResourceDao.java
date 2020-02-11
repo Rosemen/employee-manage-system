@@ -1,5 +1,6 @@
 package cn.edu.scau.employee.dao;
 
+import cn.edu.scau.employee.common.annotation.Log;
 import cn.edu.scau.employee.entity.Resource;
 import cn.edu.scau.employee.mapper.ResourceExtendMapper;
 import cn.edu.scau.employee.mapper.ResourceMapper;
@@ -34,6 +35,7 @@ public class ResourceDao {
         return resourceExtendMapper.selectByName(name);
     }
 
+    @Log(table = "resource", type = 1)
     public Long add(Resource resource) {
         resourceMapper.insert(resource);
         return resource.getId();

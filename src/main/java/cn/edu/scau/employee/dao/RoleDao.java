@@ -1,5 +1,6 @@
 package cn.edu.scau.employee.dao;
 
+import cn.edu.scau.employee.common.annotation.Log;
 import cn.edu.scau.employee.entity.Role;
 import cn.edu.scau.employee.mapper.RoleExtendMapper;
 import cn.edu.scau.employee.mapper.RoleMapper;
@@ -30,15 +31,18 @@ public class RoleDao {
         return roleExtendMapper.selectByName(name);
     }
 
+    @Log(table = "role", type = 2)
     public int deleteByIds(List<Long> ids) {
         return roleExtendMapper.deleteByIds(ids);
     }
 
+    @Log(table = "role", type = 1)
     public Long add(Role role) {
         roleMapper.insert(role);
         return role.getId();
     }
 
+    @Log(table = "role", type = 3)
     public int updateById(Role role) {
         return roleMapper.updateById(role);
     }

@@ -46,7 +46,6 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public CommonResult findAll() {
-        logger.info("RoleServiceImpl...  查询所有角色");
         List<Role> roles = roleDao.findAll();
         List<RoleResponse> roleResponses = roles.stream().map(role -> {
             RoleResponse roleResponse = ConvertUtil.convert(role, RoleResponse.class);
@@ -57,7 +56,6 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public CommonResult add(RoleAddRequest request) {
-        logger.info("RoleServiceImpl...  添加角色, 角色信息: {}", request.toString());
         Role role = ConvertUtil.convert(request, Role.class);
         role.setCreateDate(DateUtil.currentDate());
         role.setUpdateDate(DateUtil.currentDate());
@@ -81,7 +79,6 @@ public class RoleServiceImpl implements RoleService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public CommonResult update(Long id, RoleAddRequest request) {
-        logger.info("RoleServiceImpl...  更新角色, 角色id: {}, 角色信息: {}", id, request.toString());
         Role role = ConvertUtil.convert(request, Role.class);
         role.setId(id);
         role.setUpdateDate(DateUtil.currentDate());
@@ -105,7 +102,6 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public CommonResult findByName(RoleQueryRequest request) {
-        logger.info("RoleServiceImpl...  分页查询角色, 请求参数: {}", request.toString());
         PageHelper.startPage(request.getPage().getCurrentPage(), request.getPage().getPageSize());
         List<Role> roles = roleDao.findByName(request.getName());
         List<RoleResponse> responses = roles.stream().map(role -> {
@@ -121,7 +117,6 @@ public class RoleServiceImpl implements RoleService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public CommonResult deleteByIds(List<Long> ids) {
-        logger.info("RoleServiceImpl...  删除角色, 角色id列表: {}", Arrays.toString(ids.toArray()));
         int rows = roleDao.deleteByIds(ids);
         //删除角色绑定的资源
         roleResourceDao.deleteByRoleIds(ids);

@@ -46,7 +46,6 @@ public class ResourceServiceImpl implements ResourceService {
 
     @Override
     public List<Resource> findByRoleId(Long roleId) {
-        logger.info("ResourceServiceImpl...  查询资源,角色id:{}", roleId);
         List<RoleResource> roleResources = roleResourceDao.selectByRoleId(roleId);
         List<Resource> resources = roleResources.stream().map(roleResource -> {
             Resource resource = resourceDao.findById(roleResource.getResourceId());
@@ -57,14 +56,12 @@ public class ResourceServiceImpl implements ResourceService {
 
     @Override
     public CommonResult findByParentId(Long parentId) {
-        logger.info("ResourceServiceImpl...  查询资源, 资源父id:{}", parentId);
         List<ResourceResponse> responses = this.getResourceResponses(parentId);
         return CommonResult.success(responses);
     }
 
     @Override
     public CommonResult findByName(ResourceQueryRequest request) {
-        logger.info("ResourceServiceImpl...  查询资源, 请求参数:{}", request.toString());
         PageHelper.startPage(request.getPage().getCurrentPage(),
                 request.getPage().getPageSize());
         List<Resource> resources = resourceDao.findByName(request.getMenuName());
@@ -102,12 +99,10 @@ public class ResourceServiceImpl implements ResourceService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public CommonResult deleteByIds(List<Long> ids) {
-        logger.info("删除资源  资源id列表:{}", Arrays.toString(ids.toArray()));
         //获取子资源id列表
         List<Long> subIds = resourceDao.findIdByParentIds(ids);
         //剔除重复id
         if (subIds != null && subIds.size() > 0) {
-            logger.info("删除资源 子资源id列表: {}", Arrays.toString(subIds.toArray()));
             ids.removeAll(subIds);
             ids.addAll(subIds);
         }
@@ -129,7 +124,6 @@ public class ResourceServiceImpl implements ResourceService {
 
     @Override
     public CommonResult update(Long id, ResourceAddRequest request) {
-        logger.info("更新资源  资源id: {}, 资源: {}", id, request.toString());
         Resource resource = resourceDao.findById(id);
         if (!ObjectUtil.isEmpty(resource)) {
             //非叶子节点并且要修改url,需要级联修改子节点的url

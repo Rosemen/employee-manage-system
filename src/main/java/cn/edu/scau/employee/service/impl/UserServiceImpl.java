@@ -51,7 +51,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public CommonResult login(UserLoginRequest request) {
-        logger.info("UserServiceImpl  用户: {}, 正在登录中....", request.getUsername());
         Subject currentUser = SecurityUtils.getSubject();
         UsernamePasswordToken token = new UsernamePasswordToken(request.getUsername(),
                 request.getPassword());
@@ -64,14 +63,12 @@ public class UserServiceImpl implements UserService {
             //保存到Redis
             tokenDao.saveUser(tokenStr, JsonUtil.objectToJson(user));
             result.setData(tokenStr);
-            logger.info("用户: {}, 登录成功...", request.getUsername());
         }
         return result;
     }
 
     @Override
     public CommonResult logout(String token) {
-        logger.info("UserServiceImpl  正在退出登录...");
         tokenDao.clearToken(token);
         Subject currentUser = SecurityUtils.getSubject();
         currentUser.logout();
@@ -90,7 +87,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public CommonResult add(UserAddRequest request) {
-        logger.info("UserServiceImpl  添加用户, 用户信息: {}", request.toString());
         User user = ConvertUtil.convert(request, User.class);
         user.setPassword(EncryptUtil.getEncryptedPassword(user.getUsername(), user.getPassword()));
         user.setCreateTime(DateUtil.currentDate());
@@ -100,7 +96,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public CommonResult update(Long id, UserAddRequest request) {
-        logger.info("UserServiceImpl  更新用户, 用户id: {}, 用户信息: {}", id, request.toString());
         User user = ConvertUtil.convert(request, User.class);
         user.setId(id);
         user.setUpdateTime(DateUtil.currentDate());
@@ -114,7 +109,6 @@ public class UserServiceImpl implements UserService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public CommonResult delete(List<Long> ids) {
-        logger.info("UserServiceImpl  删除用户,用户id列表: {}", Arrays.toString(ids.toArray()));
         //删除帐号对应的员工信息
         List<Long> userDetailIds = ids.stream().map(id -> {
             User user = userDao.findById(id);
@@ -128,7 +122,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public CommonResult findByUsername(UserQueryRequest request) {
-        logger.info("UserServiceImpl  查询用户, 用户名: {}", request.getUsername());
         PageHelper.startPage(request.getPage().getCurrentPage(),
                 request.getPage().getPageSize());
         List<User> users = null;
@@ -147,11 +140,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public CommonResult findByToken(String token) {
-        logger.info("UserServiceImpl  查询用户, token: {}", token);
         String userInfo = tokenDao.getUserInfoByToken(token);
         User user = JsonUtil.jsonToObject(userInfo, User.class);
         UserResponse response = ConvertUtil.convert(user, UserResponse.class);
-        logger.info("=====UserResponse: {}", response.toString());
         return CommonResult.success(response);
     }
 }
