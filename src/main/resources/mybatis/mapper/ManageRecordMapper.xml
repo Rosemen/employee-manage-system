@@ -9,29 +9,24 @@
         <result column="manage_date" jdbcType="TIMESTAMP" property="manageDate"/>
         <result column="service_name" jdbcType="VARCHAR" property="serviceName"/>
         <result column="method_name" jdbcType="VARCHAR" property="methodName"/>
+        <result column="manage_content" jdbcType="VARCHAR" property="manageContent"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id, username, manage_type, manage_table, manage_date, service_name, method_name
+    id, username, manage_type, manage_table, manage_date, service_name, method_name, manage_content
   </sql>
-    <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <select id="selectById" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from manage_record
         where id = #{id,jdbcType=BIGINT}
     </select>
-    <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+
+    <delete id="deleteById" parameterType="java.lang.Long">
     delete from manage_record
     where id = #{id,jdbcType=BIGINT}
-  </delete>
+    </delete>
+
     <insert id="insert" parameterType="cn.edu.scau.employee.entity.ManageRecord">
-    insert into manage_record (id, username, manage_type, 
-      manage_table, manage_date, service_name, 
-      method_name)
-    values (#{id,jdbcType=BIGINT}, #{username,jdbcType=VARCHAR}, #{manageType,jdbcType=VARCHAR}, 
-      #{manageTable,jdbcType=VARCHAR}, #{manageDate,jdbcType=TIMESTAMP}, #{serviceName,jdbcType=VARCHAR}, 
-      #{methodName,jdbcType=VARCHAR})
-  </insert>
-    <insert id="insertSelective" parameterType="cn.edu.scau.employee.entity.ManageRecord">
         insert into manage_record
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -54,6 +49,9 @@
             </if>
             <if test="methodName != null">
                 method_name,
+            </if>
+            <if test="manageContent != null">
+                manage_content
             </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
@@ -78,9 +76,13 @@
             <if test="methodName != null">
                 #{methodName,jdbcType=VARCHAR},
             </if>
+            <if test="manageContent != null">
+                #{manageContent,jdbcType=VARCHAR},
+            </if>
         </trim>
     </insert>
-    <update id="updateByPrimaryKeySelective" parameterType="cn.edu.scau.employee.entity.ManageRecord">
+
+    <update id="updateById" parameterType="cn.edu.scau.employee.entity.ManageRecord">
         update manage_record
         <set>
             <if test="username != null">
@@ -101,40 +103,10 @@
             <if test="methodName != null">
                 method_name = #{methodName,jdbcType=VARCHAR},
             </if>
+            <if test="manageContent != null">
+                manage_content = #{manageContent,jdbcType=VARCHAR},
+            </if>
         </set>
         where id = #{id,jdbcType=BIGINT}
     </update>
-    <update id="updateByPrimaryKey" parameterType="cn.edu.scau.employee.entity.ManageRecord">
-    update manage_record
-    set username = #{username,jdbcType=VARCHAR},
-      manage_type = #{manageType,jdbcType=VARCHAR},
-      manage_table = #{manageTable,jdbcType=VARCHAR},
-      manage_date = #{manageDate,jdbcType=TIMESTAMP},
-      service_name = #{serviceName,jdbcType=VARCHAR},
-      method_name = #{methodName,jdbcType=VARCHAR}
-    where id = #{id,jdbcType=BIGINT}
-  </update>
-
-    <insert id="batchInsert" parameterType="cn.edu.scau.employee.entity.ManageRecord">
-        insert into manage_record (id, username, manage_type,
-        manage_table, manage_date, service_name,
-        method_name)
-        values
-        <foreach collection="manageRecords" separator="," item="record">
-            (
-            #{record.id,jdbcType=BIGINT},
-            #{record.username,jdbcType=VARCHAR},
-            #{record.manageType,jdbcType=VARCHAR},
-            #{record.manageTable,jdbcType=VARCHAR},
-            #{record.manageDate,jdbcType=TIMESTAMP},
-            #{record.serviceName,jdbcType=VARCHAR},
-            #{record.methodName,jdbcType=VARCHAR}
-            )
-        </foreach>
-    </insert>
-
-    <delete id="deleteByManageDate" parameterType="java.util.Date">
-        delete from manage_record
-        where manage_date &lt;= #{manageDate, jdbcType=TIMESTAMP}
-    </delete>
 </mapper>

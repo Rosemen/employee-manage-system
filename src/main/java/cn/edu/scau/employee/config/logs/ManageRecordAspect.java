@@ -2,21 +2,19 @@ package cn.edu.scau.employee.config.logs;
 
 import cn.edu.scau.common.result.CommonResult;
 import cn.edu.scau.common.util.HttpUtil;
+import cn.edu.scau.common.util.JsonUtil;
 import cn.edu.scau.common.util.ObjectUtil;
 import cn.edu.scau.employee.common.annotation.Log;
 import cn.edu.scau.employee.common.enums.ManageTypeEnum;
 import cn.edu.scau.employee.common.response.UserResponse;
 import cn.edu.scau.employee.common.util.MessageUtil;
 import cn.edu.scau.employee.entity.ManageRecord;
-import cn.edu.scau.employee.entity.User;
 import cn.edu.scau.employee.service.UserService;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Pointcut;
 import org.aspectj.lang.reflect.MethodSignature;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -67,8 +65,9 @@ public class ManageRecordAspect {
             String manageType = !ObjectUtil.isEmpty(typeEnum) ? typeEnum.getMsg() : "";
             String table = annotation.table();
             String username = user.getUsername();
+            Object[] manageContent = joinPoint.getArgs();
             ManageRecord record = ManageRecord.generate(username, manageType, table,
-                    targetClass.getSimpleName(), method.getName());
+                    targetClass.getSimpleName(), method.getName(), JsonUtil.objectToJson(manageContent));
             messageUtil.sendMessage(username, record, topic);
         }
     }
