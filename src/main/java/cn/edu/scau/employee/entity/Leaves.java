@@ -24,4 +24,10 @@ public class Leaves {
 
     private String remark;
 
+    private Integer status;
+
+    private String auditor;
+
+    private String disagreeReason;
+
 }

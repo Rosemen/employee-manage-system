@@ -1,9 +1,13 @@
 package cn.edu.scau.employee.controller;
 
 import cn.edu.scau.common.result.CommonResult;
-import cn.edu.scau.employee.common.request.AttendAddRequest;
 import cn.edu.scau.employee.common.request.AttendQueryRequest;
-import cn.edu.scau.employee.service.AttendService;
+import cn.edu.scau.employee.common.request.BusinessTripAddRequest;
+import cn.edu.scau.employee.common.request.LeaveAddRequest;
+import cn.edu.scau.employee.common.util.ValidatorUtil;
+import cn.edu.scau.employee.service.AttendanceService;
+import cn.edu.scau.employee.service.BusinessTripService;
+import cn.edu.scau.employee.service.LeaveService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -24,40 +28,71 @@ import java.util.List;
 public class AttendController {
 
     @Autowired
-    private AttendService attendService;
+    private AttendanceService attendanceService;
 
-    @ApiOperation(value = "分页查询考勤信息")
+    @Autowired
+    private LeaveService leaveService;
+
+    @Autowired
+    private BusinessTripService businessTripService;
+
+    @ApiOperation(value = "查询考勤信息")
     @ApiImplicitParam(name = "employee-token", value = "用于登录认证的token", paramType = "header", dataType = "string")
     @RequestMapping(value = "/query", method = RequestMethod.POST)
-    public CommonResult query(@RequestBody AttendQueryRequest request) {
-        return attendService.find(request);
+    public CommonResult query(@RequestBody AttendQueryRequest request) throws Exception {
+        ValidatorUtil.validate(request);
+        return attendanceService.count(request);
     }
 
     @ApiOperation(value = "根据工号查询考勤信息")
     @ApiImplicitParam(name = "employee-token", value = "用于登录认证的token", paramType = "header", dataType = "string")
-    @RequestMapping(value = "/query/{empNo}", method = RequestMethod.GET)
-    public CommonResult query(@PathVariable("empNo") Long empNo) {
-        return attendService.findByEmpNo(empNo);
+    @RequestMapping(value = "/query/{empNo}", method = RequestMethod.POST)
+    public CommonResult query(@PathVariable("empNo") Long empNo, @RequestBody AttendQueryRequest request) throws Exception {
+        ValidatorUtil.validate(request);
+        return attendanceService.countByEmpNo(request, empNo);
     }
 
-    @ApiOperation(value = "添加考勤信息")
+    @ApiOperation(value = "每日打卡")
     @ApiImplicitParam(name = "employee-token", value = "用于登录认证的token", paramType = "header", dataType = "string")
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public CommonResult add(@RequestBody AttendAddRequest request) {
-        return attendService.add(request);
+    @RequestMapping(value = "/clock/{empNo}", method = RequestMethod.GET)
+    public CommonResult clock(@PathVariable("empNo") Long empNo) {
+        return attendanceService.clock(empNo);
     }
 
-    @ApiOperation(value = "修改考勤信息")
+    @ApiOperation(value = "请假")
     @ApiImplicitParam(name = "employee-token", value = "用于登录认证的token", paramType = "header", dataType = "string")
-    @RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)
-    public CommonResult update(@PathVariable("id") Long id, @RequestBody AttendAddRequest request) {
-        return attendService.updateById(id, request);
+    @RequestMapping(value = "/leave/{empNo}", method = RequestMethod.POST)
+    public CommonResult askForLeave(@PathVariable("empNo") Long empNo, @RequestBody LeaveAddRequest request) throws Exception {
+        ValidatorUtil.validate(request);
+        return leaveService.askForLeave(empNo, request);
+    }
+
+    @ApiOperation(value = "出差申请")
+    @ApiImplicitParam(name = "employee-token", value = "用于登录认证的token", paramType = "header", dataType = "string")
+    @RequestMapping(value = "/business/{empNo}", method = RequestMethod.POST)
+    public CommonResult businessAway(@PathVariable("empNo") Long empNo, @RequestBody BusinessTripAddRequest request) throws Exception {
+        ValidatorUtil.validate(request);
+        return businessTripService.businessAway(empNo, request);
+    }
+
+    @ApiOperation(value = "查询请假记录")
+    @ApiImplicitParam(name = "employee-token", value = "用于登录认证的token", paramType = "header", dataType = "string")
+    @RequestMapping(value = "/query/leaves", method = RequestMethod.GET)
+    public CommonResult queryLeaves(@RequestParam(value = "empNo", required = false) Long empNo, @RequestParam(value = "status", required = false) Integer status) {
+        return leaveService.queryLeaves(empNo, status);
+    }
+
+    @ApiOperation(value = "查询出差记录")
+    @ApiImplicitParam(name = "employee-token", value = "用于登录认证的token", paramType = "header", dataType = "string")
+    @RequestMapping(value = "/query/business", method = RequestMethod.GET)
+    public CommonResult queryBusinessTrips(@RequestParam(value = "empNo", required = false) Long empNo, @RequestParam(value = "status", required = false) Integer status) {
+        return businessTripService.queryBusinessTrips(empNo, status);
     }
 
     @ApiOperation(value = "删除考勤信息")
     @ApiImplicitParam(name = "employee-token", value = "用于登录认证的token", paramType = "header", dataType = "string")
     @RequestMapping(value = "/delete", method = RequestMethod.DELETE)
     public CommonResult delete(@RequestParam("ids") List<Long> ids) {
-        return attendService.deleteByIds(ids);
+        return attendanceService.deleteByIds(ids);
     }
 }

@@ -45,4 +45,13 @@ public interface AttendanceExtendMapper {
                                              @Param("quarter") Integer quarter,
                                              @Param("empNo") Long empNo);
 
+    /**
+     * 获取某天考勤记录
+     *
+     * @param empNo
+     * @param startTime
+     * @return
+     */
+    Attendance selectByEmpNoAndStartTime(@Param("empNo") Long empNo,
+                                         @Param("startTime") String startTime);
 }

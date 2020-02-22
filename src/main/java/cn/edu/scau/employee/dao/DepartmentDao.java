@@ -46,4 +46,8 @@ public class DepartmentDao {
     public List<Department> findByName(String name) {
         return departmentExtendMapper.findByName(name);
     }
+
+    public Department findById(Long deptId) {
+        return departmentMapper.selectById(deptId);
+    }
 }

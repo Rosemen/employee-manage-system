@@ -51,4 +51,19 @@ public interface UserDetailExtendMapper {
      * @return
      */
     List<Long> selectAllEmpNos();
+
+    /**
+     * 获取所有员工
+     *
+     * @return
+     */
+    List<UserDetail> selectAll();
+
+    /**
+     * 根据工号查询
+     *
+     * @param empNo
+     * @return
+     */
+    UserDetail selectByEmpNo(Long empNo);
 }

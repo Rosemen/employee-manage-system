@@ -3,6 +3,7 @@ package cn.edu.scau.employee.controller;
 import cn.edu.scau.common.result.CommonResult;
 import cn.edu.scau.employee.common.request.ResourceAddRequest;
 import cn.edu.scau.employee.common.request.ResourceQueryRequest;
+import cn.edu.scau.employee.common.util.ValidatorUtil;
 import cn.edu.scau.employee.service.ResourceService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -45,21 +46,24 @@ public class ResourceController {
     @ApiOperation(value = "分页查询资源")
     @ApiImplicitParam(name = "employee-token", value = "用于登录认证的token", paramType = "header", dataType = "string")
     @RequestMapping(value = "/query", method = RequestMethod.POST)
-    public CommonResult query(@RequestBody ResourceQueryRequest request) {
+    public CommonResult query(@RequestBody ResourceQueryRequest request) throws Exception {
+        ValidatorUtil.validate(request);
         return resourceService.findByName(request);
     }
 
     @ApiOperation(value = "添加资源")
     @ApiImplicitParam(name = "employee-token", value = "用于登录认证的token", paramType = "header", dataType = "string")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public CommonResult add(@RequestBody ResourceAddRequest request) {
+    public CommonResult add(@RequestBody ResourceAddRequest request) throws Exception {
+        ValidatorUtil.validate(request);
         return resourceService.add(request);
     }
 
     @ApiOperation(value = "编辑资源")
     @ApiImplicitParam(name = "employee-token", value = "用于登录认证的token", paramType = "header", dataType = "string")
     @RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)
-    public CommonResult update(@PathVariable("id") Long id, @RequestBody ResourceAddRequest request) {
+    public CommonResult update(@PathVariable("id") Long id, @RequestBody ResourceAddRequest request) throws Exception {
+        ValidatorUtil.validate(request);
         return resourceService.update(id, request);
     }
 

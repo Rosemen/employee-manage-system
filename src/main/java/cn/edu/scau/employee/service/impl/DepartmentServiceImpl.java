@@ -1,12 +1,15 @@
 package cn.edu.scau.employee.service.impl;
 
+import cn.edu.scau.common.constant.PageConstant;
 import cn.edu.scau.common.result.CommonResult;
 import cn.edu.scau.common.result.PageCommonResult;
 import cn.edu.scau.common.util.ConvertUtil;
 import cn.edu.scau.common.util.DateUtil;
+import cn.edu.scau.common.util.ObjectUtil;
 import cn.edu.scau.employee.common.request.DeptAddRequest;
 import cn.edu.scau.employee.common.request.DeptQueryRequest;
 import cn.edu.scau.employee.common.response.DepartmentResponse;
+import cn.edu.scau.employee.config.exception.EmployeeException;
 import cn.edu.scau.employee.dao.DepartmentDao;
 import cn.edu.scau.employee.dao.UserDetailDao;
 import cn.edu.scau.employee.entity.Department;
@@ -66,7 +69,6 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public CommonResult update(Long id, DeptAddRequest request) {
-
         Department department = ConvertUtil.convert(request, Department.class);
         department.setId(id);
         department.setUpdateTime(DateUtil.currentDate());
@@ -75,9 +77,14 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public CommonResult findByName(DeptQueryRequest request) {
-        PageHelper.startPage(request.getPage().getCurrentPage(),
-                request.getPage().getPageSize());
+    public CommonResult findByName(DeptQueryRequest request) throws Exception {
+        PageConstant page = request.getPage();
+        Integer currentPage = page.getCurrentPage();
+        Integer pageSize = page.getPageSize();
+        if (ObjectUtil.isEmpty(currentPage) || ObjectUtil.isEmpty(pageSize)) {
+            logger.error("分页信息不能为空");
+            throw new EmployeeException("分页信息不能为空");
+        }
         List<Department> departments = departmentDao.findByName(request.getName());
         List<DepartmentResponse> responses = departments.stream().map(department -> {
             return ConvertUtil.convert(department, DepartmentResponse.class);

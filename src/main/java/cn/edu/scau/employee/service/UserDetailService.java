@@ -17,16 +17,18 @@ public interface UserDetailService {
      *
      * @param request
      * @return
+     * @throws Exception
      */
-    CommonResult findByName(UserDetailQueryRequest request);
+    CommonResult findByName(UserDetailQueryRequest request) throws Exception;
 
     /**
      * 添加用户信息
      *
      * @param request
+     * @throws Exception
      * @return
      */
-    CommonResult add(UserDetailAddRequest request);
+    CommonResult add(UserDetailAddRequest request) throws Exception;
 
     /**
      * 删除用户信息
@@ -42,6 +44,7 @@ public interface UserDetailService {
      * @param id
      * @param request
      * @return
+     * @throws Exception
      */
-    CommonResult updateById(Long id, UserDetailAddRequest request);
+    CommonResult updateById(Long id, UserDetailAddRequest request) throws Exception;
 }

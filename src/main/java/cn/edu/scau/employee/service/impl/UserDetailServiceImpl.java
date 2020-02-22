@@ -1,13 +1,16 @@
 package cn.edu.scau.employee.service.impl;
 
+import cn.edu.scau.common.constant.PageConstant;
 import cn.edu.scau.common.result.CommonResult;
 import cn.edu.scau.common.result.PageCommonResult;
 import cn.edu.scau.common.util.ConvertUtil;
 import cn.edu.scau.common.util.DateUtil;
+import cn.edu.scau.common.util.ObjectUtil;
 import cn.edu.scau.employee.common.constant.EmpInfoConstant;
 import cn.edu.scau.employee.common.request.UserDetailAddRequest;
 import cn.edu.scau.employee.common.request.UserDetailQueryRequest;
 import cn.edu.scau.employee.common.response.UserDetailResponse;
+import cn.edu.scau.employee.config.exception.EmployeeException;
 import cn.edu.scau.employee.dao.UserDetailDao;
 import cn.edu.scau.employee.entity.UserDetail;
 import cn.edu.scau.employee.service.UserDetailService;
@@ -41,9 +44,16 @@ public class UserDetailServiceImpl implements UserDetailService {
 
 
     @Override
-    public CommonResult findByName(UserDetailQueryRequest request) {
-        PageHelper.startPage(request.getPage().getCurrentPage(),
-                request.getPage().getPageSize());
+    public CommonResult findByName(UserDetailQueryRequest request) throws Exception{
+        PageConstant page = request.getPage();
+        Integer currentPage = page.getCurrentPage();
+        Integer pageSize = page.getPageSize();
+        if (ObjectUtil.isEmpty(currentPage) || ObjectUtil.isEmpty(pageSize)) {
+            logger.error("分页信息不能为空");
+            throw new EmployeeException("分页信息不能为空");
+        }
+        PageHelper.startPage(currentPage,
+                pageSize);
         List<UserDetail> userDetails = userDetailDao.findByName(request.getName());
         List<UserDetailResponse> responses = userDetails.stream().map(userDetail -> {
             UserDetailResponse response = ConvertUtil.convert(userDetail, UserDetailResponse.class);

@@ -37,4 +37,13 @@ public interface BusinessTripExtendMapper {
                                                @Param("quarter") Integer quarter,
                                                @Param("empNo") Long empNo);
 
+
+    /**
+     * 查询出差记录
+     *
+     * @param empNo
+     * @param status
+     * @return
+     */
+    List<BusinessTrip> selectByEmpNoAndStatus(@Param("empNo") Long empNo, @Param("status") Integer status);
 }

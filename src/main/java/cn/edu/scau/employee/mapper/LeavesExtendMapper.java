@@ -33,6 +33,16 @@ public interface LeavesExtendMapper {
      * @return
      */
     List<Leaves> selectByEmpNoAndQuarter(@Param("year") Integer year,
-                                         @Param("month") Integer quarter,
+                                         @Param("quarter") Integer quarter,
                                          @Param("empNo") Long empNo);
+
+    /**
+     * 查询员工请假情况
+     *
+     * @param empNo
+     * @param status
+     * @return
+     */
+    List<Leaves> selectByEmpNoAndStatus(@Param("empNo") Long empNo,
+                                        @Param("status") Integer status);
 }

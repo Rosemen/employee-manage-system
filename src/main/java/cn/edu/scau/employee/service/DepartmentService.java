@@ -3,11 +3,11 @@ package cn.edu.scau.employee.service;
 import cn.edu.scau.common.result.CommonResult;
 import cn.edu.scau.employee.common.request.DeptAddRequest;
 import cn.edu.scau.employee.common.request.DeptQueryRequest;
+import cn.edu.scau.employee.config.exception.EmployeeException;
 
 import java.util.List;
 
 /**
- *
  * @author chen.jiale
  * @description 部门管理业务接口
  * @date 2019/12/3 8:25
@@ -51,6 +51,7 @@ public interface DepartmentService {
      *
      * @param request
      * @return
+     * @throws Exception
      */
-    CommonResult findByName(DeptQueryRequest request);
+    CommonResult findByName(DeptQueryRequest request) throws Exception;
 }

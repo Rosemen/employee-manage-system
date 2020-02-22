@@ -42,8 +42,9 @@ public interface RoleService {
      *
      * @param request
      * @return
+     * @throws Exception
      */
-    CommonResult findByName(RoleQueryRequest request);
+    CommonResult findByName(RoleQueryRequest request) throws Exception;
 
     /**
      * 删除角色

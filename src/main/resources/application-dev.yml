@@ -106,3 +106,10 @@ management:
         include: "*"
 
 
+logging:
+  level:
+    cn:
+      edu:
+        scau:
+          employee:
+            mapper: debug

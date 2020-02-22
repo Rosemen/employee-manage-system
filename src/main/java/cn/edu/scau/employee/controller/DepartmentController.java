@@ -3,6 +3,7 @@ package cn.edu.scau.employee.controller;
 import cn.edu.scau.common.result.CommonResult;
 import cn.edu.scau.employee.common.request.DeptAddRequest;
 import cn.edu.scau.employee.common.request.DeptQueryRequest;
+import cn.edu.scau.employee.common.util.ValidatorUtil;
 import cn.edu.scau.employee.service.DepartmentService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -29,7 +30,8 @@ public class DepartmentController {
     @ApiOperation(value = "分页查询所有部门信息")
     @ApiImplicitParam(name = "employee-token", value = "用于登录认证的token", paramType = "header", dataType = "string")
     @RequestMapping(value = "/query", method = RequestMethod.POST)
-    public CommonResult query(@RequestBody DeptQueryRequest request) {
+    public CommonResult query(@RequestBody DeptQueryRequest request) throws Exception {
+        ValidatorUtil.validate(request);
         return departmentService.findByName(request);
     }
 
@@ -43,14 +45,16 @@ public class DepartmentController {
     @ApiOperation(value = "添加部门信息")
     @ApiImplicitParam(name = "employee-token", value = "用于登录认证的token", paramType = "header", dataType = "string")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public CommonResult add(@RequestBody DeptAddRequest request) {
+    public CommonResult add(@RequestBody DeptAddRequest request) throws Exception {
+        ValidatorUtil.validate(request);
         return departmentService.add(request);
     }
 
     @ApiOperation(value = "修改部门信息")
     @ApiImplicitParam(name = "employee-token", value = "用于登录认证的token", paramType = "header", dataType = "string")
     @RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)
-    public CommonResult update(@PathVariable("id") Long id, @RequestBody DeptAddRequest request) {
+    public CommonResult update(@PathVariable("id") Long id, @RequestBody DeptAddRequest request) throws Exception {
+        ValidatorUtil.validate(request);
         return departmentService.update(id, request);
     }
 

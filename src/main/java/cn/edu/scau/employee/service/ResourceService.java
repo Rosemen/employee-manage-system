@@ -38,7 +38,7 @@ public interface ResourceService {
      * @param request
      * @return
      */
-    CommonResult findByName(ResourceQueryRequest request);
+    CommonResult findByName(ResourceQueryRequest request) throws Exception;
 
     /**
      * 添加资源

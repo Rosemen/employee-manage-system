@@ -37,4 +37,12 @@
         and year(start_time) = #{year}
         and emp_no = #{empNo}
     </select>
+
+    <select id="selectByEmpNoAndStartTime" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from attendence
+        where date_format(start_time,'%Y-%m-%d') = #{startTime}
+        and emp_no = #{empNo}
+    </select>
 </mapper>

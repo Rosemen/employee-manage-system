@@ -5,6 +5,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * @author chen.jiale
  * @Description
@@ -17,6 +19,7 @@ public class ResourceQueryRequest {
     @ApiModelProperty(value = "菜单名")
     private String menuName;
 
+    @NotNull
     @ApiModelProperty(value = "分页信息")
     private PageConstant page;
 }

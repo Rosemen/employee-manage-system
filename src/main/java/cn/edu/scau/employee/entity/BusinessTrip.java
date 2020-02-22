@@ -22,6 +22,14 @@ public class BusinessTrip {
 
     private String place;
 
+    private Integer status;
+
+    private String auditor;
+
+    private String disagreeReason;
+
+    private Date auditingTime;
+
     private String remark;
 
 }

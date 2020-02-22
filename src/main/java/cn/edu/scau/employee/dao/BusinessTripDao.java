@@ -1,5 +1,7 @@
 package cn.edu.scau.employee.dao;
 
+import cn.edu.scau.common.result.CommonResult;
+import cn.edu.scau.employee.common.annotation.Log;
 import cn.edu.scau.employee.entity.BusinessTrip;
 import cn.edu.scau.employee.mapper.BusinessTripExtendMapper;
 import cn.edu.scau.employee.mapper.BusinessTripMapper;
@@ -28,5 +30,14 @@ public class BusinessTripDao {
 
     public List<BusinessTrip> findByEmpNoAndQuarter(Integer year, Integer quarter, Long empNo) {
         return businessTripExtendMapper.selectByEmpNoAndQuarter(year, quarter, empNo);
+    }
+
+    @Log(table = "business_trip", type = 1)
+    public Integer add(BusinessTrip businessTrip) {
+        return businessTripMapper.insert(businessTrip);
+    }
+
+    public List<BusinessTrip> selectByEmpNoAndStatus(Long empNo, Integer status) {
+        return businessTripExtendMapper.selectByEmpNoAndStatus(empNo, status);
     }
 }

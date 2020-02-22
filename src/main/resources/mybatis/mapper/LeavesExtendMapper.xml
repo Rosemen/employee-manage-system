@@ -8,9 +8,12 @@
         <result column="start_time" jdbcType="TIMESTAMP" property="startTime"/>
         <result column="end_time" jdbcType="TIMESTAMP" property="endTime"/>
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="auditor" jdbcType="VARCHAR" property="auditor"/>
+        <result column="disagree_reason" jdbcType="VARCHAR" property="disagreeReason"/>
     </resultMap>
     <sql id="Base_Column_List">
-      id, emp_no, type, start_time, end_time, remark
+    id, emp_no, type, start_time, end_time, remark, status, auditor, disagree_reason
     </sql>
 
     <select id="selectByEmpNoAndMonth" resultMap="BaseResultMap">
@@ -33,4 +36,17 @@
         and (year(start_time) = #{year} or year(end_time) = #{year})
     </select>
 
+    <select id="selectByEmpNoAndStatus" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from leaves
+        <where>
+            <if test="empNo != null">
+                and emp_no = #{empNo}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+        </where>
+    </select>
 </mapper>

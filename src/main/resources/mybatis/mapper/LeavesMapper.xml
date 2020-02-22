@@ -8,9 +8,12 @@
         <result column="start_time" jdbcType="TIMESTAMP" property="startTime"/>
         <result column="end_time" jdbcType="TIMESTAMP" property="endTime"/>
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="auditor" jdbcType="VARCHAR" property="auditor"/>
+        <result column="disagree_reason" jdbcType="VARCHAR" property="disagreeReason"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id, emp_no, type, start_time, end_time, remark
+    id, emp_no, type, start_time, end_time, remark, status, auditor, disagree_reason
     </sql>
 
     <select id="selectById" parameterType="java.lang.Long" resultMap="BaseResultMap">
@@ -47,6 +50,15 @@
             <if test="remark != null">
                 remark,
             </if>
+            <if test="status != null">
+                status,
+            </if>
+            <if test="auditor != null">
+                auditor,
+            </if>
+            <if test="disagreeReason != null">
+                disagree_reason,
+            </if>
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -66,6 +78,15 @@
             </if>
             <if test="remark != null">
                 #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=INTEGER},
+            </if>
+            <if test="auditor != null">
+                #{auditor,jdbcType=VARCHAR},
+            </if>
+            <if test="disagreeReason != null">
+                #{disagreeReason,jdbcType=VARCHAR},
             </if>
         </trim>
     </insert>
@@ -87,6 +108,15 @@
             </if>
             <if test="remark != null">
                 remark = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null">
+                status = #{status,jdbcType=INTEGER},
+            </if>
+            <if test="auditor != null">
+                auditor = #{auditor,jdbcType=VARCHAR},
+            </if>
+            <if test="disagreeReason != null">
+                disagree_reason = #{disagreeReason,jdbcType=VARCHAR},
             </if>
         </set>
         where id = #{id,jdbcType=BIGINT}

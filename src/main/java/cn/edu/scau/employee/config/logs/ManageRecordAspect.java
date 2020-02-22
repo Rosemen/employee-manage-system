@@ -48,7 +48,7 @@ public class ManageRecordAspect {
     }
 
     @AfterReturning(value = "pointcut()")
-    public void afterReturn(JoinPoint joinPoint) {
+    public void afterReturn(JoinPoint joinPoint) throws Exception {
         MethodSignature methodSignature = (MethodSignature) joinPoint.getSignature();
         Class targetClass = methodSignature.getDeclaringType();
         Method method = methodSignature.getMethod();
@@ -71,6 +71,4 @@ public class ManageRecordAspect {
             messageUtil.sendMessage(username, record, topic);
         }
     }
-
-
 }

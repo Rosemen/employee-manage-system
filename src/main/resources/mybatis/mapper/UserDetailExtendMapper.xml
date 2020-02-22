@@ -60,4 +60,17 @@
         emp_no
         from user_detail
     </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from user_detail
+    </select>
+
+    <select id="selectByEmpNo" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        select
+        <include refid="Base_Column_List"/>
+        from user_detail
+        where emp_no = #{empNo, jdbcType=BIGINT}
+    </select>
 </mapper>

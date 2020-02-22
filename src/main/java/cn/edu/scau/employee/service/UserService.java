@@ -43,6 +43,7 @@ public interface UserService {
      * 导出用户excel文件
      *
      * @return
+     * @throws Exception
      */
     CommonResult exportExcel() throws Exception;
 
@@ -76,8 +77,9 @@ public interface UserService {
      *
      * @param request
      * @return
+     * @throws Exception
      */
-    CommonResult findByUsername(UserQueryRequest request);
+    CommonResult findByUsername(UserQueryRequest request) throws Exception;
 
     /**
      * 根据token查询用户信息
@@ -85,5 +87,5 @@ public interface UserService {
      * @param token
      * @return
      */
-    CommonResult findByToken(String token);
+    CommonResult findByToken(String token) throws Exception;
 }

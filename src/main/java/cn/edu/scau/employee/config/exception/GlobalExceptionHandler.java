@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
- *
  * @author chen.jiale
  * @description 异常处理器
  * @date 2019/11/11 16:45
@@ -33,6 +32,13 @@ public class GlobalExceptionHandler {
         logger.error(ResponseEnum.NO_PERMISSION.getMsg(), ex);
         return CommonResult.error(ResponseEnum.NO_PERMISSION.getCode(),
                 ResponseEnum.NO_PERMISSION.getMsg());
+    }
+
+    @ExceptionHandler(value = {EmployeeException.class})
+    public CommonResult employeeExceptionHandler(Exception ex) {
+        logger.error(ResponseEnum.ERROR.getMsg(), ex);
+        return CommonResult.error(ResponseEnum.ERROR.getCode(),
+                ex.getMessage());
     }
 
     @ExceptionHandler(value = {Exception.class})

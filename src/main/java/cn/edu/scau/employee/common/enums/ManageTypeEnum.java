@@ -36,7 +36,7 @@ public enum ManageTypeEnum {
                 return manageTypeEnum;
             }
         }
-        return null;
+        throw new RuntimeException("不支持状态值: " + code);
     }
 
 }

@@ -3,6 +3,7 @@ package cn.edu.scau.employee.controller;
 import cn.edu.scau.common.result.CommonResult;
 import cn.edu.scau.employee.common.request.RoleAddRequest;
 import cn.edu.scau.employee.common.request.RoleQueryRequest;
+import cn.edu.scau.employee.common.util.ValidatorUtil;
 import cn.edu.scau.employee.service.RoleService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -36,7 +37,8 @@ public class RoleController {
     @ApiOperation(value = "分页查询角色")
     @ApiImplicitParam(name = "employee-token", value = "用于登录认证的token", paramType = "header", dataType = "string")
     @RequestMapping(value = "/query", method = RequestMethod.POST)
-    public CommonResult query(@RequestBody RoleQueryRequest request) {
+    public CommonResult query(@RequestBody RoleQueryRequest request) throws Exception {
+        ValidatorUtil.validate(request);
         return roleService.findByName(request);
     }
 
@@ -50,14 +52,16 @@ public class RoleController {
     @ApiOperation(value = "添加角色")
     @ApiImplicitParam(name = "employee-token", value = "用于登录认证的token", paramType = "header", dataType = "string")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public CommonResult add(@RequestBody RoleAddRequest request) {
+    public CommonResult add(@RequestBody RoleAddRequest request) throws Exception {
+        ValidatorUtil.validate(request);
         return roleService.add(request);
     }
 
     @ApiOperation(value = "更新角色")
     @ApiImplicitParam(name = "employee-token", value = "用于登录认证的token", paramType = "header", dataType = "string")
     @RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)
-    public CommonResult update(@PathVariable("id") Long id, @RequestBody RoleAddRequest request) {
+    public CommonResult update(@PathVariable("id") Long id, @RequestBody RoleAddRequest request) throws Exception {
+        ValidatorUtil.validate(request);
         return roleService.update(id, request);
     }
 }

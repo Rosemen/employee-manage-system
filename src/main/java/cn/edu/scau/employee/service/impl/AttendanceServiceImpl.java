@@ -1,28 +1,26 @@
 package cn.edu.scau.employee.service.impl;
 
 import cn.edu.scau.common.result.CommonResult;
+import cn.edu.scau.common.util.CollectionUtil;
+import cn.edu.scau.common.util.ConvertUtil;
 import cn.edu.scau.common.util.DateUtil;
+import cn.edu.scau.common.util.ObjectUtil;
 import cn.edu.scau.employee.common.constant.EmpInfoConstant;
-import cn.edu.scau.employee.common.request.AttendAddRequest;
+import cn.edu.scau.employee.common.enums.BusinessStatusEnum;
+import cn.edu.scau.employee.common.enums.LeaveStatusEnum;
 import cn.edu.scau.employee.common.request.AttendQueryRequest;
+import cn.edu.scau.employee.common.request.BusinessTripAddRequest;
+import cn.edu.scau.employee.common.request.LeaveAddRequest;
 import cn.edu.scau.employee.common.response.AttendResponse;
-import cn.edu.scau.employee.dao.AttendanceDao;
-import cn.edu.scau.employee.dao.BusinessTripDao;
-import cn.edu.scau.employee.dao.LeavesDao;
-import cn.edu.scau.employee.dao.UserDetailDao;
-import cn.edu.scau.employee.entity.Attendance;
-import cn.edu.scau.employee.entity.BusinessTrip;
-import cn.edu.scau.employee.entity.Leaves;
-import cn.edu.scau.employee.service.AttendService;
+import cn.edu.scau.employee.dao.*;
+import cn.edu.scau.employee.entity.*;
+import cn.edu.scau.employee.service.AttendanceService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.*;
 
 /**
  * @author chen.jiale
@@ -30,9 +28,9 @@ import java.util.stream.Collectors;
  * @date 2020/2/5 14:37
  */
 @Service
-public class AttendServiceImpl implements AttendService {
+public class AttendanceServiceImpl implements AttendanceService {
 
-    private static final Logger logger = LoggerFactory.getLogger(AttendServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(AttendanceServiceImpl.class);
 
     @Autowired
     private AttendanceDao attendanceDao;
@@ -41,71 +39,115 @@ public class AttendServiceImpl implements AttendService {
     private UserDetailDao userDetailDao;
 
     @Autowired
+    private DepartmentDao departmentDao;
+
+    @Autowired
     private LeavesDao leavesDao;
 
     @Autowired
     private BusinessTripDao businessTripDao;
 
     @Override
-    public CommonResult findByEmpNo(Long empNo) {
-        return null;
+    public CommonResult countByEmpNo(AttendQueryRequest request, Long empNo) {
+        UserDetail userDetail = userDetailDao.findByEmpNo(empNo);
+        AttendResponse response = this.doCountAttendRecord(userDetail, request);
+        return CommonResult.success(response);
     }
 
     @Override
-    public CommonResult find(AttendQueryRequest request) {
-        List<Long> empNos = userDetailDao.findAllEmpNos();
-        List<AttendResponse> responses = empNos.stream().map(empNo -> {
-            AttendResponse response = new AttendResponse();
-            List<Attendance> attendances = null;
-            List<Leaves> leaves = null;
-            List<BusinessTrip> businessTrips = null;
-            Integer year = request.getYear();
-            Integer attendDays = 0;
-            //按月查询
-            if (EmpInfoConstant.MONTH_RANGE == request.getRange()) {
-                Integer month = request.getMonth();
-                attendances = attendanceDao.findByEmpNoAndMonth(year, month, empNo);
-                attendDays = DateUtil.getWorkDaysOfMonth(year, month);
-                leaves = leavesDao.findByEmpNoAndMonth(year, month, empNo);
-                businessTrips = businessTripDao.findByEmpNoAndMonth(year, month, empNo);
-            } else if (EmpInfoConstant.QUARTER_RANGE == request.getRange()) {
-                //按季度查询
-                Integer quarter = request.getQuarter();
-                attendances = attendanceDao.findByEmpNoAndQuarter(year, quarter, empNo);
-                attendDays = DateUtil.getWorkDaysOfQuarter(year, quarter);
-                leaves = leavesDao.findByEmpNoAndQuarter(year, quarter, empNo);
-                businessTrips = businessTripDao.findByEmpNoAndQuarter(year, quarter, empNo);
+    public CommonResult count(AttendQueryRequest request) {
+        List<AttendResponse> responses = new ArrayList<>();
+        List<UserDetail> userDetails = userDetailDao.findAll();
+        if (!CollectionUtil.isEmpty(userDetails)) {
+            for (UserDetail userDetail : userDetails) {
+                AttendResponse response = this.doCountAttendRecord(userDetail, request);
+                if (!ObjectUtil.isEmpty(response)) {
+                    responses.add(response);
+                }
             }
-            //统计实际出勤天数,迟到天数,早退天数
-            Integer actualAttendDays = 0, lateDays = 0, earlyDays = 0;
-            if (null != attendances && attendances.size() > 0) {
-                Map<String, Integer> attendMap = countAttendDays(attendances);
-                actualAttendDays = attendMap.get("actualAttendDays");
-                earlyDays = attendMap.get("earlyDays");
-                lateDays = attendMap.get("lateDays");
-            }
-            //统计请假天数
-            Integer leaveDays = 0;
-            if (null != leaves && leaves.size() > 0) {
-                leaveDays = countLeaveDays(leaves, request);
-            }
-            //统计出差天数
-            Integer businessDays = 0;
-            if (null != businessTrips && businessTrips.size() > 0) {
-                businessDays = countBusinessDays(businessTrips, request);
-            }
-            response.setEmpNo(empNo);
-            response.setAttendDays(attendDays);
-            response.setRealAttendDays(actualAttendDays);
-            response.setLateDays(earlyDays);
-            response.setEarlyDays(lateDays);
-            response.setLeaveDays(leaveDays);
-            response.setBusinessDays(businessDays);
-            //旷工天数
-            response.setSkiDays(attendDays - actualAttendDays - leaveDays - businessDays);
-            return response;
-        }).collect(Collectors.toList());
+        }
         return CommonResult.success(responses);
+    }
+
+    /**
+     * 统计考勤
+     *
+     * @param userDetail
+     * @param request
+     * @return
+     */
+    private AttendResponse doCountAttendRecord(UserDetail userDetail, AttendQueryRequest request) {
+        Long empNo = userDetail.getEmpNo();
+        AttendResponse response = new AttendResponse();
+        List<Attendance> attendances = null;
+        List<Leaves> leaves = null;
+        List<BusinessTrip> businessTrips = null;
+        Integer year = request.getYear();
+        Integer attendDays = 0;
+        //按月查询
+        if (EmpInfoConstant.MONTH_RANGE == request.getRange()) {
+            Integer month = request.getMonth();
+            attendances = attendanceDao.findByEmpNoAndMonth(year, month, empNo);
+            attendDays = DateUtil.getWorkDaysOfMonth(year, month);
+            leaves = leavesDao.findByEmpNoAndMonth(year, month, empNo);
+            businessTrips = businessTripDao.findByEmpNoAndMonth(year, month, empNo);
+        } else if (EmpInfoConstant.QUARTER_RANGE == request.getRange()) {
+            //按季度查询
+            Integer quarter = request.getQuarter();
+            attendances = attendanceDao.findByEmpNoAndQuarter(year, quarter, empNo);
+            attendDays = DateUtil.getWorkDaysOfQuarter(year, quarter);
+            leaves = leavesDao.findByEmpNoAndQuarter(year, quarter, empNo);
+            businessTrips = businessTripDao.findByEmpNoAndQuarter(year, quarter, empNo);
+        }
+        //没有对应的记录
+        if (CollectionUtil.isEmpty(attendances) && CollectionUtil.isEmpty(leaves) && CollectionUtil.isEmpty(businessTrips)) {
+            return null;
+        }
+        //统计实际出勤天数,迟到天数,早退天数
+        Integer actualAttendDays = 0, lateDays = 0, earlyDays = 0;
+        if (!CollectionUtil.isEmpty(attendances)) {
+            Map<String, Integer> attendMap = countAttendDays(attendances);
+            actualAttendDays = attendMap.get("actualAttendDays");
+            earlyDays = attendMap.get("earlyDays");
+            lateDays = attendMap.get("lateDays");
+        }
+        //统计请假天数
+        Integer leaveDays = 0;
+        if (!CollectionUtil.isEmpty(leaves)) {
+            leaveDays = countLeaveDays(leaves, request);
+        }
+        //统计出差天数
+        Integer businessDays = 0;
+        if (!CollectionUtil.isEmpty(businessTrips)) {
+            businessDays = countBusinessDays(businessTrips, request);
+        }
+        response.setEmpNo(empNo);
+        response.setName(userDetail.getName());
+        Department department = departmentDao.findById(userDetail.getDeptId());
+        response.setDept(department.getName());
+        response.setAttendDays(attendDays);
+        response.setActualAttendDays(actualAttendDays);
+        response.setLateDays(earlyDays);
+        response.setEarlyDays(lateDays);
+        response.setLeaveDays(leaveDays);
+        response.setBusinessDays(businessDays);
+        //旷工天数
+        Integer skiDays = 0;
+        Date currentDate = DateUtil.currentDate();
+        int currentYear = DateUtil.getYear(currentDate);
+        int currentMonth = DateUtil.getMonth(currentDate);
+        int currentQuarter = DateUtil.getQuarter(currentDate);
+        if (EmpInfoConstant.MONTH_RANGE == request.getRange()) {
+            if (currentYear >= year && currentMonth >= request.getMonth()) {
+                skiDays = attendDays - actualAttendDays - leaveDays - businessDays;
+            }
+        } else if (EmpInfoConstant.QUARTER_RANGE == request.getRange()) {
+            if (currentYear >= year && currentQuarter >= request.getQuarter()) {
+                skiDays = attendDays - actualAttendDays - leaveDays - businessDays;
+            }
+        }
+        response.setSkiDays(skiDays);
+        return response;
     }
 
     /**
@@ -225,13 +267,26 @@ public class AttendServiceImpl implements AttendService {
     }
 
     @Override
-    public CommonResult add(AttendAddRequest request) {
-        return null;
-    }
-
-    @Override
-    public CommonResult updateById(Long id, AttendAddRequest request) {
-        return null;
+    public CommonResult clock(Long empNo) {
+        Date currentDate = new Date();
+        Attendance attendance = attendanceDao.findByEmpNoAndStartTime(empNo,
+                DateUtil.dateToStr(currentDate, "yyyy-MM-dd"));
+        if (ObjectUtil.isEmpty(attendance)) {
+            attendance = new Attendance();
+            attendance.setEmpNo(empNo);
+            attendance.setStartTime(currentDate);
+            String startTimeStr = DateUtil.dateToStr(currentDate, "HH:mm:ss");
+            if (startTimeStr.compareTo(EmpInfoConstant.START_TIME) > 1) {
+                attendance.setLate(true);
+            } else {
+                attendance.setLate(false);
+            }
+            attendanceDao.add(attendance);
+        } else {
+            attendance.setEndTime(new Date());
+            attendanceDao.updateById(attendance);
+        }
+        return CommonResult.success();
     }
 
     @Override

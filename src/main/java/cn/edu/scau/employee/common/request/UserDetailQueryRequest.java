@@ -5,6 +5,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * @author chen.jiale
  * @Description 员工信息查询参数类
@@ -17,6 +19,7 @@ public class UserDetailQueryRequest {
     @ApiModelProperty(value = "员工姓名")
     private String name;
 
+    @NotNull
     @ApiModelProperty(value = "分页信息")
     private PageConstant page;
 }

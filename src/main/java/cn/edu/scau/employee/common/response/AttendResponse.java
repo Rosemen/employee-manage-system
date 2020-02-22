@@ -19,11 +19,14 @@ public class AttendResponse {
     @ApiModelProperty(value = "员工姓名")
     private String name;
 
+    @ApiModelProperty(value = "员工部门")
+    private String dept;
+
     @ApiModelProperty(value = "应出席天数")
     private Integer attendDays;
 
     @ApiModelProperty(value = "实际出席天数")
-    private Integer realAttendDays;
+    private Integer actualAttendDays;
 
     @ApiModelProperty(value = "迟到天数")
     private Integer lateDays;

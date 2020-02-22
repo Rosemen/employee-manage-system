@@ -3,6 +3,7 @@ package cn.edu.scau.employee.common.constant;
 import lombok.Data;
 
 
+
 /**
  * @author chen.jiale
  * @Description 系统常量
@@ -30,4 +31,14 @@ public class EmpInfoConstant {
      * 考勤查询季度维度
      */
     public static final int QUARTER_RANGE = 2;
+
+    /**
+     * 上班时间
+     */
+    public static final String START_TIME = "09:00:00";
+
+    /**
+     * 下班时间
+     */
+    public static final String END_TIME = "18:00:00";
 }

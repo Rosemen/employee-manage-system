@@ -3,6 +3,7 @@ package cn.edu.scau.employee.controller;
 import cn.edu.scau.common.result.CommonResult;
 import cn.edu.scau.employee.common.request.UserDetailAddRequest;
 import cn.edu.scau.employee.common.request.UserDetailQueryRequest;
+import cn.edu.scau.employee.common.util.ValidatorUtil;
 import cn.edu.scau.employee.service.UserDetailService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
@@ -29,14 +30,16 @@ public class UserDetailController {
     @ApiOperation(value = "分页查询员工信息")
     @ApiImplicitParam(name = "employee-token", value = "用于登录认证的token", paramType = "header", dataType = "string")
     @RequestMapping(value = "/query", method = RequestMethod.POST)
-    public CommonResult query(@RequestBody UserDetailQueryRequest request) {
+    public CommonResult query(@RequestBody UserDetailQueryRequest request) throws Exception {
+        ValidatorUtil.validate(request);
         return userDetailService.findByName(request);
     }
 
     @ApiOperation(value = "添加员工信息")
     @ApiImplicitParam(name = "employee-token", value = "用于登录认证的token", paramType = "header", dataType = "string")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public CommonResult add(@RequestBody UserDetailAddRequest request) {
+    public CommonResult add(@RequestBody UserDetailAddRequest request) throws Exception {
+        ValidatorUtil.validate(request);
         return userDetailService.add(request);
     }
 
@@ -50,7 +53,8 @@ public class UserDetailController {
     @ApiOperation(value = "更新员工信息")
     @ApiImplicitParam(name = "employee-token", value = "用于登录认证的token", paramType = "header", dataType = "string")
     @RequestMapping(value = "/update/{id}", method = RequestMethod.PUT)
-    public CommonResult update(@PathVariable("id") Long id, @RequestBody UserDetailAddRequest request) {
+    public CommonResult update(@PathVariable("id") Long id, @RequestBody UserDetailAddRequest request) throws Exception {
+        ValidatorUtil.validate(request);
         return userDetailService.updateById(id, request);
     }
 }

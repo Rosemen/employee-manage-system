@@ -7,10 +7,14 @@
         <result column="start_time" jdbcType="TIMESTAMP" property="startTime"/>
         <result column="end_time" jdbcType="TIMESTAMP" property="endTime"/>
         <result column="place" jdbcType="VARCHAR" property="place"/>
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="auditor" jdbcType="VARCHAR" property="auditor"/>
+        <result column="disagree_reason" jdbcType="VARCHAR" property="disagreeReason"/>
+        <result column="auditing_time" jdbcType="TIMESTAMP" property="auditingTime"/>
         <result column="remark" jdbcType="VARCHAR" property="remark"/>
     </resultMap>
     <sql id="Base_Column_List">
-    id, emp_no, start_time, end_time, place, remark
+    id, emp_no, start_time, end_time, place, status, auditor, disagree_reason, auditing_time, remark
     </sql>
 
     <select id="selectByEmpNoAndMonth" resultMap="BaseResultMap">
@@ -31,5 +35,19 @@
         emp_no = #{empNo}
         and (quarter(start_time) = #{quarter} or quarter(end_time) = #{quarter})
         and (year(start_time) = #{year} or year(start_time) = #{year})
+    </select>
+
+    <select id="selectByEmpNoAndStatus" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from business_trip
+        <where>
+            <if test="empNo != null">
+                and emp_no = #{empNo}
+            </if>
+            <if test="status != null">
+                and status = #{status}
+            </if>
+        </where>
     </select>
 </mapper>

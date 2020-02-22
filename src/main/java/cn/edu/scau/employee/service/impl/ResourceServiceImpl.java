@@ -1,5 +1,6 @@
 package cn.edu.scau.employee.service.impl;
 
+import cn.edu.scau.common.constant.PageConstant;
 import cn.edu.scau.common.result.CommonResult;
 import cn.edu.scau.common.result.PageCommonResult;
 import cn.edu.scau.common.util.ConvertUtil;
@@ -8,6 +9,7 @@ import cn.edu.scau.common.util.ObjectUtil;
 import cn.edu.scau.employee.common.request.ResourceAddRequest;
 import cn.edu.scau.employee.common.request.ResourceQueryRequest;
 import cn.edu.scau.employee.common.response.ResourceResponse;
+import cn.edu.scau.employee.config.exception.EmployeeException;
 import cn.edu.scau.employee.dao.ResourceDao;
 import cn.edu.scau.employee.dao.RoleResourceDao;
 import cn.edu.scau.employee.entity.Resource;
@@ -61,9 +63,14 @@ public class ResourceServiceImpl implements ResourceService {
     }
 
     @Override
-    public CommonResult findByName(ResourceQueryRequest request) {
-        PageHelper.startPage(request.getPage().getCurrentPage(),
-                request.getPage().getPageSize());
+    public CommonResult findByName(ResourceQueryRequest request) throws Exception {
+        PageConstant page = request.getPage();
+        Integer currentPage = page.getCurrentPage();
+        Integer pageSize = page.getPageSize();
+        if (ObjectUtil.isEmpty(currentPage) || ObjectUtil.isEmpty(pageSize)) {
+            logger.error("分页信息不能为空");
+            throw new EmployeeException("分页信息不能为空");
+        }
         List<Resource> resources = resourceDao.findByName(request.getMenuName());
         List<ResourceResponse> responses = resources.stream().map(resource -> {
             ResourceResponse response = ConvertUtil.convert(resource, ResourceResponse.class);

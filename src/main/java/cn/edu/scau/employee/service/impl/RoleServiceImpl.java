@@ -1,12 +1,15 @@
 package cn.edu.scau.employee.service.impl;
 
+import cn.edu.scau.common.constant.PageConstant;
 import cn.edu.scau.common.result.CommonResult;
 import cn.edu.scau.common.result.PageCommonResult;
 import cn.edu.scau.common.util.ConvertUtil;
 import cn.edu.scau.common.util.DateUtil;
+import cn.edu.scau.common.util.ObjectUtil;
 import cn.edu.scau.employee.common.request.RoleAddRequest;
 import cn.edu.scau.employee.common.request.RoleQueryRequest;
 import cn.edu.scau.employee.common.response.RoleResponse;
+import cn.edu.scau.employee.config.exception.EmployeeException;
 import cn.edu.scau.employee.dao.RoleDao;
 import cn.edu.scau.employee.dao.RoleResourceDao;
 import cn.edu.scau.employee.dao.UserDao;
@@ -101,8 +104,14 @@ public class RoleServiceImpl implements RoleService {
     }
 
     @Override
-    public CommonResult findByName(RoleQueryRequest request) {
-        PageHelper.startPage(request.getPage().getCurrentPage(), request.getPage().getPageSize());
+    public CommonResult findByName(RoleQueryRequest request) throws Exception {
+        PageConstant page = request.getPage();
+        Integer currentPage = page.getCurrentPage();
+        Integer pageSize = page.getPageSize();
+        if (ObjectUtil.isEmpty(currentPage) || ObjectUtil.isEmpty(pageSize)) {
+            logger.error("分页信息不能为空");
+            throw new EmployeeException("分页信息不能为空");
+        }
         List<Role> roles = roleDao.findByName(request.getName());
         List<RoleResponse> responses = roles.stream().map(role -> {
             RoleResponse roleResponse = ConvertUtil.convert(role, RoleResponse.class);

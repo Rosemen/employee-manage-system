@@ -9,6 +9,7 @@ import cn.edu.scau.employee.common.request.UserLoginRequest;
 import cn.edu.scau.employee.common.request.UserQueryRequest;
 import cn.edu.scau.employee.common.response.UserResponse;
 import cn.edu.scau.employee.common.util.EncryptUtil;
+import cn.edu.scau.employee.config.exception.EmployeeException;
 import cn.edu.scau.employee.dao.TokenDao;
 import cn.edu.scau.employee.dao.UserDao;
 import cn.edu.scau.employee.dao.UserDetailDao;
@@ -26,6 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.validation.constraints.NotNull;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -121,9 +123,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public CommonResult findByUsername(UserQueryRequest request) {
-        PageHelper.startPage(request.getPage().getCurrentPage(),
-                request.getPage().getPageSize());
+    public CommonResult findByUsername(UserQueryRequest request) throws Exception {
+        PageConstant page = request.getPage();
+        Integer currentPage = page.getCurrentPage();
+        Integer pageSize = page.getPageSize();
+        if (ObjectUtil.isEmpty(currentPage) || ObjectUtil.isEmpty(pageSize)) {
+            logger.error("分页信息不能为空");
+            throw new EmployeeException("分页信息不能为空");
+        }
+        PageHelper.startPage(currentPage,
+                pageSize);
         List<User> users = null;
         if (StringUtils.isEmpty(request.getUsername())) {
             users = userDao.findAll();
@@ -139,7 +148,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public CommonResult findByToken(String token) {
+    public CommonResult findByToken(String token) throws Exception {
+        if (StringUtils.isEmpty(token)) {
+            logger.error("查询用户失败,token不存在");
+            throw new EmployeeException("token不存在");
+        }
         String userInfo = tokenDao.getUserInfoByToken(token);
         User user = JsonUtil.jsonToObject(userInfo, User.class);
         UserResponse response = ConvertUtil.convert(user, UserResponse.class);

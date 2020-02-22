@@ -5,6 +5,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * @author chen.jiale
  * @Description
@@ -17,6 +19,7 @@ public class RoleQueryRequest {
     @ApiModelProperty(value = "角色名")
     private String name;
 
+    @NotNull
     @ApiModelProperty(value = "分页信息")
     private PageConstant page;
 }
