@@ -6,12 +6,12 @@ import lombok.Data;
 
 /**
  * @author chen.jiale
- * @Description
+ * @Description 考勤统计响应类
  * @date 2019/12/30 23:59
  */
 @Data
-@ApiModel(value = "AttendResponse", description = "考勤请求响应类")
-public class AttendResponse {
+@ApiModel(value = "AttendCountResponse", description = "考勤统计响应类")
+public class AttendCountResponse {
 
     @ApiModelProperty(value = "员工编号")
     private Long empNo;

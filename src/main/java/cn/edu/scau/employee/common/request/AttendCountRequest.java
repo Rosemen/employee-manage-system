@@ -12,8 +12,8 @@ import javax.validation.constraints.NotNull;
  * @date 2020/2/5 14:52
  */
 @Data
-@ApiModel(value = "AttendQueryRequest", description = "考勤信息查询request")
-public class AttendQueryRequest {
+@ApiModel(value = "AttendCountRequest", description = "考勤统计request")
+public class AttendCountRequest {
 
     @NotNull
     @ApiModelProperty(value = "查询纬度 1:月份 2:季度")

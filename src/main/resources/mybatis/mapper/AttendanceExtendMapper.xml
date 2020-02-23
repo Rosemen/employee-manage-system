@@ -24,9 +24,17 @@
         select
         <include refid="Base_Column_List"/>
         from attendence
-        where month(start_time) = #{month}
-        and year(start_time) = #{year}
-        and emp_no = #{empNo}
+        <where>
+            <if test="month != null">
+                and month(start_time) = #{month}
+            </if>
+            <if test="year != null">
+                and year(start_time) = #{year}
+            </if>
+            <if test="empNo != null">
+                and emp_no = #{empNo}
+            </if>
+        </where>
     </select>
 
     <select id="selectByEmpNoAndQuarter" resultMap="BaseResultMap">

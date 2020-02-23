@@ -108,7 +108,7 @@ public class RoleServiceImpl implements RoleService {
         PageConstant page = request.getPage();
         Integer currentPage = page.getCurrentPage();
         Integer pageSize = page.getPageSize();
-        if (ObjectUtil.isEmpty(currentPage) || ObjectUtil.isEmpty(pageSize)) {
+        if (ObjectUtil.isIntegerEmpty(currentPage) || ObjectUtil.isIntegerEmpty(pageSize)) {
             logger.error("分页信息不能为空");
             throw new EmployeeException("分页信息不能为空");
         }

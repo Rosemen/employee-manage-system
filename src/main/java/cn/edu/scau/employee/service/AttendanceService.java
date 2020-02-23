@@ -1,9 +1,8 @@
 package cn.edu.scau.employee.service;
 
 import cn.edu.scau.common.result.CommonResult;
-import cn.edu.scau.employee.common.request.AttendQueryRequest;
-import cn.edu.scau.employee.common.request.BusinessTripAddRequest;
-import cn.edu.scau.employee.common.request.LeaveAddRequest;
+import cn.edu.scau.employee.common.request.AttendCountRequest;
+import cn.edu.scau.employee.common.request.AttendanceQueryRequest;
 
 import java.util.List;
 
@@ -21,7 +20,7 @@ public interface AttendanceService {
      * @param empNo
      * @return
      */
-    CommonResult countByEmpNo(AttendQueryRequest request, Long empNo);
+    CommonResult countByEmpNo(AttendCountRequest request, Long empNo);
 
     /**
      * 统计考勤情况
@@ -29,7 +28,7 @@ public interface AttendanceService {
      * @param request
      * @return
      */
-    CommonResult count(AttendQueryRequest request);
+    CommonResult count(AttendCountRequest request);
 
     /**
      * 删除考勤记录
@@ -46,4 +45,14 @@ public interface AttendanceService {
      * @return
      */
     CommonResult clock(Long empNo);
+
+    /**
+     * 查询每日打卡记录
+     *
+     * @param empNo
+     * @param request
+     * @return
+     * @throws Exception
+     */
+    CommonResult queryAttendances(Long empNo, AttendanceQueryRequest request) throws Exception;
 }
