@@ -1,6 +1,7 @@
 package cn.edu.scau.employee.controller;
 
 import cn.edu.scau.common.result.CommonResult;
+import cn.edu.scau.common.util.FtpUtil;
 import cn.edu.scau.employee.common.request.UserAddRequest;
 import cn.edu.scau.employee.common.request.UserLoginRequest;
 import cn.edu.scau.employee.common.request.UserQueryRequest;
@@ -47,20 +48,6 @@ public class UserController {
     public CommonResult logout(HttpServletRequest request) {
         String token = request.getHeader(tokenName);
         return userService.logout(token);
-    }
-
-    @ApiOperation(value = "导入用户信息")
-    @ApiImplicitParam(name = "employee-token", value = "用于登录认证的token", paramType = "header", dataType = "string")
-    @RequestMapping(value = "/upload", method = RequestMethod.POST)
-    public CommonResult upload(@RequestParam(value = "file") MultipartFile file) throws Exception {
-        return userService.importExcel(file.getBytes());
-    }
-
-    @ApiOperation(value = "导出用户信息")
-    @ApiImplicitParam(name = "employee-token", value = "用于登录认证的token", paramType = "header", dataType = "string")
-    @RequestMapping(value = "/download", method = RequestMethod.POST)
-    public CommonResult download() throws Exception {
-        return userService.exportExcel();
     }
 
     @ApiOperation(value = "添加用户")

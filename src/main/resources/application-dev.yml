@@ -113,3 +113,11 @@ logging:
         scau:
           employee:
             mapper: debug
+
+ftp:
+  host: "119.3.177.0"
+  port: 21
+  user: "jackson"
+  password: "445221"
+  base-path: "/home/jackson"
+  url-prefix: "http://119.3.177.0"

@@ -5,6 +5,7 @@ import cn.edu.scau.common.result.CommonResult;
 import cn.edu.scau.employee.common.constant.HttpConstant;
 import com.alibaba.fastjson.JSON;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.subject.Subject;
 import org.apache.shiro.web.filter.authz.PermissionsAuthorizationFilter;
 
 import javax.servlet.ServletRequest;
@@ -23,7 +24,9 @@ public class PermissionCheckFilter extends PermissionsAuthorizationFilter {
 
     @Override
     public boolean isAccessAllowed(ServletRequest request, ServletResponse response, Object mappedValue) throws IOException {
-        return SecurityUtils.getSubject().isPermitted(getPathWithinApplication(request));
+        Subject subject = SecurityUtils.getSubject();
+        String application = getPathWithinApplication(request);
+        return subject.isPermitted(application);
     }
 
     @Override

@@ -32,22 +32,6 @@ public interface UserService {
     CommonResult logout(String token);
 
     /**
-     * 导入用户excel文件
-     *
-     * @param bytes
-     * @return
-     */
-    CommonResult importExcel(byte[] bytes);
-
-    /**
-     * 导出用户excel文件
-     *
-     * @return
-     * @throws Exception
-     */
-    CommonResult exportExcel() throws Exception;
-
-    /**
      * 添加用户
      *
      * @param request

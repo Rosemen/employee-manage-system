@@ -10,6 +10,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -56,5 +57,19 @@ public class UserDetailController {
     public CommonResult update(@PathVariable("id") Long id, @RequestBody UserDetailAddRequest request) throws Exception {
         ValidatorUtil.validate(request);
         return userDetailService.updateById(id, request);
+    }
+
+    @ApiOperation(value = "导入用户信息")
+    @ApiImplicitParam(name = "employee-token", value = "用于登录认证的token", paramType = "header", dataType = "string")
+    @RequestMapping(value = "/upload", method = RequestMethod.POST)
+    public CommonResult upload(@RequestParam(value = "file") MultipartFile file) throws Exception {
+        return userDetailService.upload(file.getBytes());
+    }
+
+    @ApiOperation(value = "导出用户信息")
+    @ApiImplicitParam(name = "employee-token", value = "用于登录认证的token", paramType = "header", dataType = "string")
+    @RequestMapping(value = "/download", method = RequestMethod.POST)
+    public CommonResult download() throws Exception {
+        return userDetailService.download();
     }
 }

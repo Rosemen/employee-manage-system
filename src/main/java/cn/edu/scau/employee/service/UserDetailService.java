@@ -25,8 +25,8 @@ public interface UserDetailService {
      * 添加用户信息
      *
      * @param request
-     * @throws Exception
      * @return
+     * @throws Exception
      */
     CommonResult add(UserDetailAddRequest request) throws Exception;
 
@@ -47,4 +47,19 @@ public interface UserDetailService {
      * @throws Exception
      */
     CommonResult updateById(Long id, UserDetailAddRequest request) throws Exception;
+
+    /**
+     * 上传文件
+     *
+     * @param bytes
+     * @return
+     */
+    CommonResult upload(byte[] bytes) throws Exception;
+
+    /**
+     * 导出文件
+     *
+     * @return
+     */
+    CommonResult download();
 }
