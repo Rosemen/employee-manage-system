@@ -1,8 +1,8 @@
 package cn.edu.scau.employee.controller;
 
 import cn.edu.scau.common.result.CommonResult;
-import cn.edu.scau.employee.common.request.RoleAddRequest;
-import cn.edu.scau.employee.common.request.RoleQueryRequest;
+import cn.edu.scau.employee.common.model.request.RoleAddRequest;
+import cn.edu.scau.employee.common.model.request.RoleQueryRequest;
 import cn.edu.scau.employee.common.util.ValidatorUtil;
 import cn.edu.scau.employee.service.RoleService;
 import io.swagger.annotations.Api;

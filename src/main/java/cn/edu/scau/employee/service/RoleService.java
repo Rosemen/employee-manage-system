@@ -2,8 +2,8 @@ package cn.edu.scau.employee.service;
 
 
 import cn.edu.scau.common.result.CommonResult;
-import cn.edu.scau.employee.common.request.RoleAddRequest;
-import cn.edu.scau.employee.common.request.RoleQueryRequest;
+import cn.edu.scau.employee.common.model.request.RoleAddRequest;
+import cn.edu.scau.employee.common.model.request.RoleQueryRequest;
 
 import java.util.List;
 

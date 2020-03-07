@@ -1,7 +1,7 @@
 package cn.edu.scau.employee.service;
 
 import cn.edu.scau.common.result.CommonResult;
-import cn.edu.scau.employee.common.request.BusinessTripAddRequest;
+import cn.edu.scau.employee.common.model.request.BusinessTripAddRequest;
 
 /**
  * @author chen.jiale

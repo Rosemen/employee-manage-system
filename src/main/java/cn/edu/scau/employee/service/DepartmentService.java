@@ -1,9 +1,8 @@
 package cn.edu.scau.employee.service;
 
 import cn.edu.scau.common.result.CommonResult;
-import cn.edu.scau.employee.common.request.DeptAddRequest;
-import cn.edu.scau.employee.common.request.DeptQueryRequest;
-import cn.edu.scau.employee.config.exception.EmployeeException;
+import cn.edu.scau.employee.common.model.request.DeptAddRequest;
+import cn.edu.scau.employee.common.model.request.DeptQueryRequest;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package cn.edu.scau.employee.common.request;
+package cn.edu.scau.employee.common.model;
 
 import cn.edu.scau.employee.common.constant.GenderConverter;
 import com.alibaba.excel.annotation.ExcelProperty;
@@ -14,7 +14,7 @@ import java.util.Date;
  * @date 2020/2/23 22:38
  */
 @Data
-public class UserDetailExcelRequest implements Serializable {
+public class UserDetailExcelItem implements Serializable {
 
     private static final long serialVersionUID = -2681990221426393702L;
 

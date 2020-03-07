@@ -6,7 +6,7 @@ import cn.edu.scau.common.util.JsonUtil;
 import cn.edu.scau.common.util.ObjectUtil;
 import cn.edu.scau.employee.common.annotation.Log;
 import cn.edu.scau.employee.common.enums.ManageTypeEnum;
-import cn.edu.scau.employee.common.response.UserResponse;
+import cn.edu.scau.employee.common.model.response.UserResponse;
 import cn.edu.scau.employee.common.util.MessageUtil;
 import cn.edu.scau.employee.entity.ManageRecord;
 import cn.edu.scau.employee.service.UserService;

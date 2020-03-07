@@ -1,8 +1,6 @@
 package cn.edu.scau.employee.service.impl;
 
 import cn.edu.scau.common.constant.PageConstant;
-import cn.edu.scau.common.constant.SystemConstant;
-import cn.edu.scau.common.enums.ResponseEnum;
 import cn.edu.scau.common.result.CommonResult;
 import cn.edu.scau.common.result.PageCommonResult;
 import cn.edu.scau.common.util.CollectionUtil;
@@ -10,11 +8,12 @@ import cn.edu.scau.common.util.ConvertUtil;
 import cn.edu.scau.common.util.DateUtil;
 import cn.edu.scau.common.util.ObjectUtil;
 import cn.edu.scau.employee.common.constant.EmpInfoConstant;
-import cn.edu.scau.employee.common.request.UserDetailAddRequest;
-import cn.edu.scau.employee.common.request.UserDetailExcelRequest;
-import cn.edu.scau.employee.common.request.UserDetailQueryRequest;
-import cn.edu.scau.employee.common.response.UserDetailResponse;
+import cn.edu.scau.employee.common.model.request.UserDetailAddRequest;
+import cn.edu.scau.employee.common.model.UserDetailExcelItem;
+import cn.edu.scau.employee.common.model.request.UserDetailQueryRequest;
+import cn.edu.scau.employee.common.model.response.UserDetailResponse;
 import cn.edu.scau.employee.common.util.ExcelUtil;
+import cn.edu.scau.employee.config.excel.TableStyleStrategy;
 import cn.edu.scau.employee.config.exception.EmployeeException;
 import cn.edu.scau.employee.dao.DepartmentDao;
 import cn.edu.scau.employee.dao.UserDetailDao;
@@ -22,16 +21,24 @@ import cn.edu.scau.employee.entity.Department;
 import cn.edu.scau.employee.entity.UserDetail;
 import cn.edu.scau.employee.service.UserDetailService;
 import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.ExcelWriter;
+import com.alibaba.excel.util.DateUtils;
+import com.alibaba.excel.write.builder.ExcelWriterBuilder;
+import com.alibaba.excel.write.metadata.WriteSheet;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.support.atomic.RedisAtomicLong;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
@@ -103,10 +110,10 @@ public class UserDetailServiceImpl implements UserDetailService {
 
     @Override
     public CommonResult upload(byte[] bytes) throws Exception {
-        try{
-            EasyExcel.read(new ByteArrayInputStream(bytes), UserDetailExcelRequest.class,
+        try {
+            EasyExcel.read(new ByteArrayInputStream(bytes), UserDetailExcelItem.class,
                     ExcelUtil.getListener(batchInsert())).sheet().doRead();
-        }catch (Exception ex) {
+        } catch (Exception ex) {
             logger.error("上传用户信息文件错误", ex);
             throw new EmployeeException("上传用户信息文件错误");
         }
@@ -114,8 +121,17 @@ public class UserDetailServiceImpl implements UserDetailService {
     }
 
     @Override
-    public CommonResult download() {
-        return CommonResult.success();
+    public List<UserDetailExcelItem> download() throws Exception {
+        List<UserDetail> userDetails = userDetailDao.findAll();
+        List<UserDetailExcelItem> userDetailExcelItems = new ArrayList<>();
+        userDetails.forEach(userDetail -> {
+            UserDetailExcelItem item = ConvertUtil.convert(userDetail, UserDetailExcelItem.class);
+            Department department = departmentDao.findById(userDetail.getDeptId());
+            String deptName = !ObjectUtil.isEmpty(department) ? department.getName() : "";
+            item.setDept(deptName);
+            userDetailExcelItems.add(item);
+        });
+        return userDetailExcelItems;
     }
 
     private Long generateEmpNo() {
@@ -128,13 +144,13 @@ public class UserDetailServiceImpl implements UserDetailService {
         return Long.valueOf(empNo);
     }
 
-    private Consumer<List<UserDetailExcelRequest>> batchInsert(){
+    private Consumer<List<UserDetailExcelItem>> batchInsert() {
         return userDetailExcelRequests -> {
             try {
-                for (UserDetailExcelRequest request : userDetailExcelRequests) {
+                for (UserDetailExcelItem request : userDetailExcelRequests) {
                     UserDetail userDetail = ConvertUtil.convert(request, UserDetail.class);
                     List<Department> departments = departmentDao.findByName(request.getDept());
-                    if (!CollectionUtil.isEmpty(departments)){
+                    if (!CollectionUtil.isEmpty(departments)) {
                         Department department = departments.get(0);
                         userDetail.setDeptId(department.getId());
                     }

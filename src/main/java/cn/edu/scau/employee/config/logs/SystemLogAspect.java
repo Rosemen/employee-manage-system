@@ -2,6 +2,7 @@ package cn.edu.scau.employee.config.logs;
 
 import cn.edu.scau.common.util.DateUtil;
 import cn.edu.scau.common.util.HttpUtil;
+import cn.edu.scau.common.util.ObjectUtil;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.*;
 import org.aspectj.lang.reflect.MethodSignature;
@@ -48,6 +49,8 @@ public class SystemLogAspect {
     @AfterReturning(value = "pointcut()", returning = "response")
     public void afterReturn(JoinPoint joinPoint, Object response) {
         logger.info("[请求结始时间]:{}", DateUtil.now());
-        logger.info("[响应结果]:{}", response.toString());
+        String result = !ObjectUtil.isEmpty(response)?response.toString():"";
+        logger.info("[响应结果]:{}", result
+        );
     }
 }

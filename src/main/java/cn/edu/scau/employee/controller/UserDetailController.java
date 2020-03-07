@@ -1,10 +1,16 @@
 package cn.edu.scau.employee.controller;
 
 import cn.edu.scau.common.result.CommonResult;
-import cn.edu.scau.employee.common.request.UserDetailAddRequest;
-import cn.edu.scau.employee.common.request.UserDetailQueryRequest;
+import cn.edu.scau.employee.common.model.UserDetailExcelItem;
+import cn.edu.scau.employee.common.model.request.UserDetailAddRequest;
+import cn.edu.scau.employee.common.model.request.UserDetailQueryRequest;
 import cn.edu.scau.employee.common.util.ValidatorUtil;
+import cn.edu.scau.employee.config.excel.TableStyleStrategy;
 import cn.edu.scau.employee.service.UserDetailService;
+import com.alibaba.excel.EasyExcel;
+import com.alibaba.excel.ExcelWriter;
+import com.alibaba.excel.write.builder.ExcelWriterBuilder;
+import com.alibaba.excel.write.metadata.WriteSheet;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
@@ -12,6 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.net.URLEncoder;
 import java.util.List;
 
 /**
@@ -68,8 +77,21 @@ public class UserDetailController {
 
     @ApiOperation(value = "导出用户信息")
     @ApiImplicitParam(name = "employee-token", value = "用于登录认证的token", paramType = "header", dataType = "string")
-    @RequestMapping(value = "/download", method = RequestMethod.POST)
-    public CommonResult download() throws Exception {
-        return userDetailService.download();
+    @RequestMapping(value = "/download", method = RequestMethod.GET)
+    public void download(HttpServletResponse response) throws Exception {
+        ServletOutputStream outputStream = response.getOutputStream();
+        String fileName = URLEncoder.encode("员工信息", "UTF-8");
+        response.setHeader("Content-disposition", "attachment;filename=" + fileName + ".xlsx");
+        response.setContentType("application/vnd.ms-excel");
+        response.setCharacterEncoding("utf-8");
+        ExcelWriterBuilder writerBuilder = EasyExcel.write(outputStream, UserDetailExcelItem.class);
+        ExcelWriter excelWriter = writerBuilder.build();
+        WriteSheet writeSheet = EasyExcel.writerSheet()
+                .registerWriteHandler(TableStyleStrategy.getStrategy())
+                .build();
+        List<UserDetailExcelItem> items = userDetailService.download();
+        excelWriter.write(items, writeSheet);
+        excelWriter.finish();
+        outputStream.close();
     }
 }

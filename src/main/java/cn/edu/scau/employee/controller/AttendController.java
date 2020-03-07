@@ -1,10 +1,10 @@
 package cn.edu.scau.employee.controller;
 
 import cn.edu.scau.common.result.CommonResult;
-import cn.edu.scau.employee.common.request.AttendCountRequest;
-import cn.edu.scau.employee.common.request.AttendanceQueryRequest;
-import cn.edu.scau.employee.common.request.BusinessTripAddRequest;
-import cn.edu.scau.employee.common.request.LeaveAddRequest;
+import cn.edu.scau.employee.common.model.request.AttendCountRequest;
+import cn.edu.scau.employee.common.model.request.AttendanceQueryRequest;
+import cn.edu.scau.employee.common.model.request.BusinessTripAddRequest;
+import cn.edu.scau.employee.common.model.request.LeaveAddRequest;
 import cn.edu.scau.employee.common.util.ValidatorUtil;
 import cn.edu.scau.employee.service.AttendanceService;
 import cn.edu.scau.employee.service.BusinessTripService;

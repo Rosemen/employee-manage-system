@@ -1,4 +1,4 @@
-package cn.edu.scau.employee.common.request;
+package cn.edu.scau.employee.common.model.request;
 
 import cn.edu.scau.common.constant.PageConstant;
 import io.swagger.annotations.ApiModel;
@@ -10,14 +10,14 @@ import javax.validation.constraints.NotNull;
 /**
  * @author chen.jiale
  * @Description
- * @date 2020/1/22 12:14
+ * @date 2020/1/22 15:36
  */
 @Data
-@ApiModel(value = "DeptQueryRequest", description = "部门查询request")
-public class DeptQueryRequest {
+@ApiModel(value = "ResourceQueryRequest", description = "资源查询request")
+public class ResourceQueryRequest {
 
-    @ApiModelProperty(value = "部门名")
-    private String name;
+    @ApiModelProperty(value = "菜单名")
+    private String menuName;
 
     @NotNull
     @ApiModelProperty(value = "分页信息")

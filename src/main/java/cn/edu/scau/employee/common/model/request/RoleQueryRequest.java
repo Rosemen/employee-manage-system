@@ -1,4 +1,4 @@
-package cn.edu.scau.employee.common.request;
+package cn.edu.scau.employee.common.model.request;
 
 import cn.edu.scau.common.constant.PageConstant;
 import io.swagger.annotations.ApiModel;

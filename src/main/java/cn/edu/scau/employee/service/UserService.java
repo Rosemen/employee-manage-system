@@ -2,9 +2,9 @@ package cn.edu.scau.employee.service;
 
 
 import cn.edu.scau.common.result.CommonResult;
-import cn.edu.scau.employee.common.request.UserAddRequest;
-import cn.edu.scau.employee.common.request.UserLoginRequest;
-import cn.edu.scau.employee.common.request.UserQueryRequest;
+import cn.edu.scau.employee.common.model.request.UserAddRequest;
+import cn.edu.scau.employee.common.model.request.UserLoginRequest;
+import cn.edu.scau.employee.common.model.request.UserQueryRequest;
 
 import java.util.List;
 

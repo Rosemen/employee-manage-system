@@ -6,22 +6,20 @@ import cn.edu.scau.common.result.PageCommonResult;
 import cn.edu.scau.common.util.ConvertUtil;
 import cn.edu.scau.common.util.DateUtil;
 import cn.edu.scau.common.util.ObjectUtil;
-import cn.edu.scau.employee.common.request.DeptAddRequest;
-import cn.edu.scau.employee.common.request.DeptQueryRequest;
-import cn.edu.scau.employee.common.response.DepartmentResponse;
+import cn.edu.scau.employee.common.model.request.DeptAddRequest;
+import cn.edu.scau.employee.common.model.request.DeptQueryRequest;
+import cn.edu.scau.employee.common.model.response.DepartmentResponse;
 import cn.edu.scau.employee.config.exception.EmployeeException;
 import cn.edu.scau.employee.dao.DepartmentDao;
 import cn.edu.scau.employee.dao.UserDetailDao;
 import cn.edu.scau.employee.entity.Department;
 import cn.edu.scau.employee.service.DepartmentService;
-import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 

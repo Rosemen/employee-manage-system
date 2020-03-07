@@ -1,8 +1,8 @@
 package cn.edu.scau.employee.service;
 
 import cn.edu.scau.common.result.CommonResult;
-import cn.edu.scau.employee.common.request.AttendCountRequest;
-import cn.edu.scau.employee.common.request.AttendanceQueryRequest;
+import cn.edu.scau.employee.common.model.request.AttendCountRequest;
+import cn.edu.scau.employee.common.model.request.AttendanceQueryRequest;
 
 import java.util.List;
 

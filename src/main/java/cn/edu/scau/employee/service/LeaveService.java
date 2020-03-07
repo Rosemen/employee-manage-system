@@ -1,7 +1,7 @@
 package cn.edu.scau.employee.service;
 
 import cn.edu.scau.common.result.CommonResult;
-import cn.edu.scau.employee.common.request.LeaveAddRequest;
+import cn.edu.scau.employee.common.model.request.LeaveAddRequest;
 
 /**
  * @author chen.jiale

@@ -1,4 +1,4 @@
-package cn.edu.scau.employee.common.response;
+package cn.edu.scau.employee.common.model.response;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;

@@ -2,8 +2,8 @@ package cn.edu.scau.employee.service;
 
 
 import cn.edu.scau.common.result.CommonResult;
-import cn.edu.scau.employee.common.request.ResourceAddRequest;
-import cn.edu.scau.employee.common.request.ResourceQueryRequest;
+import cn.edu.scau.employee.common.model.request.ResourceAddRequest;
+import cn.edu.scau.employee.common.model.request.ResourceQueryRequest;
 import cn.edu.scau.employee.entity.Resource;
 
 import java.util.List;

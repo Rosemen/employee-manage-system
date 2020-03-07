@@ -1,4 +1,4 @@
-package cn.edu.scau.employee.common.request;
+package cn.edu.scau.employee.common.model.request;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -9,11 +9,11 @@ import javax.validation.constraints.NotNull;
 /**
  * @author chen.jiale
  * @Description
- * @date 2019/12/22 11:27
+ * @date 2019/12/22 11:28
  */
-@ApiModel(value = "UserLoginRequest", description = "用户登录请求参数封装类")
 @Data
-public class UserLoginRequest {
+@ApiModel(value = "UserAddRequest", description = "用户添加request")
+public class UserAddRequest {
 
     @NotNull
     @ApiModelProperty(value = "用户名")
@@ -21,5 +21,10 @@ public class UserLoginRequest {
 
     @NotNull
     @ApiModelProperty(value = "密码")
-    private String password;
+    private String password = "123456";
+
+    @NotNull
+    @ApiModelProperty(value = "角色id")
+    private Long roleId;
+
 }

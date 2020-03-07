@@ -1,4 +1,4 @@
-package cn.edu.scau.employee.common.response;
+package cn.edu.scau.employee.common.model.response;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -12,11 +12,14 @@ import java.util.Date;
  * @date 2020/2/21 23:59
  */
 @Data
-@ApiModel(value = "BusinessTripResponse", description = "出差响应类")
-public class BusinessTripResponse {
+@ApiModel(value = "LeaveResponse", description = "考勤请求响应类")
+public class LeaveResponse {
 
     @ApiModelProperty(value = "员工编号")
     private Long empNo;
+
+    @ApiModelProperty(value = "请假类型")
+    private String leaveType;
 
     @ApiModelProperty(value = "开始时间")
     private Date startTime;

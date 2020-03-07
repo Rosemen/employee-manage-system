@@ -8,10 +8,10 @@ import cn.edu.scau.common.util.ConvertUtil;
 import cn.edu.scau.common.util.DateUtil;
 import cn.edu.scau.common.util.ObjectUtil;
 import cn.edu.scau.employee.common.constant.EmpInfoConstant;
-import cn.edu.scau.employee.common.request.AttendCountRequest;
-import cn.edu.scau.employee.common.request.AttendanceQueryRequest;
-import cn.edu.scau.employee.common.response.AttendCountResponse;
-import cn.edu.scau.employee.common.response.AttendanceResponse;
+import cn.edu.scau.employee.common.model.request.AttendCountRequest;
+import cn.edu.scau.employee.common.model.request.AttendanceQueryRequest;
+import cn.edu.scau.employee.common.model.response.AttendCountResponse;
+import cn.edu.scau.employee.common.model.response.AttendanceResponse;
 import cn.edu.scau.employee.config.exception.EmployeeException;
 import cn.edu.scau.employee.dao.*;
 import cn.edu.scau.employee.entity.*;
@@ -22,7 +22,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.validation.constraints.NotNull;
 import java.util.*;
 
 /**

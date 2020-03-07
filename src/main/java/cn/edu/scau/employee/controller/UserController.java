@@ -1,10 +1,9 @@
 package cn.edu.scau.employee.controller;
 
 import cn.edu.scau.common.result.CommonResult;
-import cn.edu.scau.common.util.FtpUtil;
-import cn.edu.scau.employee.common.request.UserAddRequest;
-import cn.edu.scau.employee.common.request.UserLoginRequest;
-import cn.edu.scau.employee.common.request.UserQueryRequest;
+import cn.edu.scau.employee.common.model.request.UserAddRequest;
+import cn.edu.scau.employee.common.model.request.UserLoginRequest;
+import cn.edu.scau.employee.common.model.request.UserQueryRequest;
 import cn.edu.scau.employee.common.util.ValidatorUtil;
 import cn.edu.scau.employee.service.UserService;
 import io.swagger.annotations.Api;
@@ -13,7 +12,6 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;

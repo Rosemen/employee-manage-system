@@ -1,8 +1,8 @@
 package cn.edu.scau.employee.controller;
 
 import cn.edu.scau.common.result.CommonResult;
-import cn.edu.scau.employee.common.request.ResourceAddRequest;
-import cn.edu.scau.employee.common.request.ResourceQueryRequest;
+import cn.edu.scau.employee.common.model.request.ResourceAddRequest;
+import cn.edu.scau.employee.common.model.request.ResourceQueryRequest;
 import cn.edu.scau.employee.common.util.ValidatorUtil;
 import cn.edu.scau.employee.service.ResourceService;
 import io.swagger.annotations.Api;

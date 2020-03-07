@@ -1,8 +1,9 @@
 package cn.edu.scau.employee.service;
 
 import cn.edu.scau.common.result.CommonResult;
-import cn.edu.scau.employee.common.request.UserDetailAddRequest;
-import cn.edu.scau.employee.common.request.UserDetailQueryRequest;
+import cn.edu.scau.employee.common.model.UserDetailExcelItem;
+import cn.edu.scau.employee.common.model.request.UserDetailAddRequest;
+import cn.edu.scau.employee.common.model.request.UserDetailQueryRequest;
 
 import java.util.List;
 
@@ -53,6 +54,7 @@ public interface UserDetailService {
      *
      * @param bytes
      * @return
+     * @throws Exception
      */
     CommonResult upload(byte[] bytes) throws Exception;
 
@@ -60,6 +62,7 @@ public interface UserDetailService {
      * 导出文件
      *
      * @return
+     * @throws Exception
      */
-    CommonResult download();
+    List<UserDetailExcelItem> download() throws Exception;
 }

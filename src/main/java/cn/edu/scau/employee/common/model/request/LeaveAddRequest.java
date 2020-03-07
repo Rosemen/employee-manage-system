@@ -1,4 +1,4 @@
-package cn.edu.scau.employee.common.request;
+package cn.edu.scau.employee.common.model.request;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -13,8 +13,8 @@ import java.util.Date;
  * @date 2020/2/19 22:48
  */
 @Data
-@ApiModel(value = "BusinessTripAddRequest", description = "出差request")
-public class BusinessTripAddRequest {
+@ApiModel(value = "LeaveAddRequest", description = "请假request")
+public class LeaveAddRequest {
 
     @NotNull
     @ApiModelProperty(value = "开始时间")
@@ -25,8 +25,8 @@ public class BusinessTripAddRequest {
     private Date endTime;
 
     @NotNull
-    @ApiModelProperty(value = "出差地点")
-    private String place;
+    @ApiModelProperty(value = "请假类型")
+    private Integer type;
 
     @ApiModelProperty(value = "备注")
     private String remark;
