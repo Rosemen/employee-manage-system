@@ -16,7 +16,7 @@ import java.util.Date;
 public class LeaveResponse {
 
     @ApiModelProperty(value = "员工编号")
-    private Long empNo;
+    private String empNo;
 
     @ApiModelProperty(value = "请假类型")
     private String leaveType;

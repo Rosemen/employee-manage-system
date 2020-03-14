@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.scau.employee.mapper.SalaryExtendMapper">
+  <resultMap id="BaseResultMap" type="cn.edu.scau.employee.entity.Salary">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="emp_no" jdbcType="BIGINT" property="empNo" />
+    <result column="base_salary" jdbcType="DECIMAL" property="baseSalary" />
+    <result column="actual_salary" jdbcType="DECIMAL" property="actualSalary" />
+    <result column="housing_subsidies" jdbcType="DECIMAL" property="housingSubsidies" />
+    <result column="meal_allowance" jdbcType="DECIMAL" property="mealAllowance" />
+    <result column="overtime_allowance" jdbcType="DECIMAL" property="overtimeAllowance" />
+    <result column="other_allowance" jdbcType="DECIMAL" property="otherAllowance" />
+    <result column="from_absences" jdbcType="DECIMAL" property="fromAbsences" />
+    <result column="housing_provident_fund" jdbcType="DECIMAL" property="housingProvidentFund" />
+    <result column="payment_time" jdbcType="TIMESTAMP" property="paymentTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, emp_no, base_salary, actual_salary, housing_subsidies, meal_allowance, overtime_allowance, 
+    other_allowance, from_absences, housing_provident_fund, payment_time, update_time
+  </sql>
+
+  <select id="selectByEmpNo" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"></include>
+    from salary
+    <where>
+      <if test="empNo != null and empNo != ''">
+        and emp_no = #{empNo}
+      </if>
+      <if test="year != null">
+        and year(payment_time) = #{year}
+      </if>
+      <if test="month != null">
+        and month(payment_time) = #{month}
+      </if>
+    </where>
+  </select>
+
+  <delete id="deleteByIds" parameterType="java.util.List">
+    delete from salary
+    where id in
+    <foreach collection="ids" item="id" open="(" separator="," close=")">
+      #{id}
+    </foreach>
+  </delete>
+</mapper>

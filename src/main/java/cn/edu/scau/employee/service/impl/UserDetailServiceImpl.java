@@ -85,7 +85,7 @@ public class UserDetailServiceImpl implements UserDetailService {
     @Override
     public CommonResult add(UserDetailAddRequest request) {
         UserDetail userDetail = ConvertUtil.convert(request, UserDetail.class);
-        Long empNo = generateEmpNo();
+        String empNo = generateEmpNo() + "";
         userDetail.setEmpNo(empNo);
         Long id = userDetailDao.add(userDetail);
         Map<String, Object> resultMap = new HashMap<>();
@@ -132,6 +132,16 @@ public class UserDetailServiceImpl implements UserDetailService {
             userDetailExcelItems.add(item);
         });
         return userDetailExcelItems;
+    }
+
+    @Override
+    public CommonResult findByEmpNo(String empNo) {
+        UserDetail userDetail = userDetailDao.findByEmpNo(empNo);
+        UserDetailResponse response = null;
+        if (!ObjectUtil.isEmpty(userDetail)) {
+            response = ConvertUtil.convert(userDetail, UserDetailResponse.class);
+        }
+        return CommonResult.success(response);
     }
 
     private Long generateEmpNo() {

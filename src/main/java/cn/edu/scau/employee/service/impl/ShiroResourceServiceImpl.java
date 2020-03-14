@@ -1,7 +1,7 @@
 package cn.edu.scau.employee.service.impl;
 
-import cn.edu.scau.employee.dao.ShiroResourceDao;
-import cn.edu.scau.employee.dao.ShiroRoleResourceDao;
+import cn.edu.scau.employee.dao.shiro.ShiroResourceDao;
+import cn.edu.scau.employee.dao.shiro.ShiroRoleResourceDao;
 import cn.edu.scau.employee.entity.Resource;
 import cn.edu.scau.employee.entity.RoleResource;
 import cn.edu.scau.employee.service.ShiroResourceService;

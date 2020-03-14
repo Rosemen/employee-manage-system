@@ -14,7 +14,7 @@ public class Leaves {
 
     private Long id;
 
-    private Long empNo;
+    private String empNo;
 
     private Integer type;
 

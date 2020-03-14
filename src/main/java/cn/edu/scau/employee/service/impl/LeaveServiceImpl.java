@@ -27,7 +27,7 @@ public class LeaveServiceImpl implements LeaveService {
     private LeavesDao leavesDao;
 
     @Override
-    public CommonResult askForLeave(Long empNo, LeaveAddRequest request) {
+    public CommonResult askForLeave(String empNo, LeaveAddRequest request) {
         Leaves leave = ConvertUtil.convert(request, Leaves.class);
         leave.setEmpNo(empNo);
         leave.setStatus(LeaveStatusEnum.WAIT_HANDLE.getCode());
@@ -36,7 +36,7 @@ public class LeaveServiceImpl implements LeaveService {
     }
 
     @Override
-    public CommonResult queryLeaves(Long empNo, Integer status) {
+    public CommonResult queryLeaves(String empNo, Integer status) {
         List<Leaves> leaves = leavesDao.findByEmpNoAndStatus(empNo, status);
         List<LeaveResponse> responses = new ArrayList<>();
         leaves.forEach(leave -> {

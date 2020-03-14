@@ -20,7 +20,7 @@ public interface AttendanceService {
      * @param empNo
      * @return
      */
-    CommonResult countByEmpNo(AttendCountRequest request, Long empNo);
+    CommonResult countByEmpNo(AttendCountRequest request, String empNo);
 
     /**
      * 统计考勤情况
@@ -44,7 +44,7 @@ public interface AttendanceService {
      * @param empNo
      * @return
      */
-    CommonResult clock(Long empNo);
+    CommonResult clock(String empNo);
 
     /**
      * 查询每日打卡记录
@@ -54,5 +54,5 @@ public interface AttendanceService {
      * @return
      * @throws Exception
      */
-    CommonResult queryAttendances(Long empNo, AttendanceQueryRequest request) throws Exception;
+    CommonResult queryAttendances(String empNo, AttendanceQueryRequest request) throws Exception;
 }

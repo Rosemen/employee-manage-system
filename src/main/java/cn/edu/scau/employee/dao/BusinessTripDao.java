@@ -1,6 +1,5 @@
 package cn.edu.scau.employee.dao;
 
-import cn.edu.scau.common.result.CommonResult;
 import cn.edu.scau.employee.common.annotation.Log;
 import cn.edu.scau.employee.entity.BusinessTrip;
 import cn.edu.scau.employee.mapper.BusinessTripExtendMapper;
@@ -24,11 +23,11 @@ public class BusinessTripDao {
     @Autowired
     private BusinessTripExtendMapper businessTripExtendMapper;
 
-    public List<BusinessTrip> findByEmpNoAndMonth(Integer year, Integer month, Long empNo) {
+    public List<BusinessTrip> findByEmpNoAndMonth(Integer year, Integer month, String empNo) {
         return businessTripExtendMapper.selectByEmpNoAndMonth(year, month, empNo);
     }
 
-    public List<BusinessTrip> findByEmpNoAndQuarter(Integer year, Integer quarter, Long empNo) {
+    public List<BusinessTrip> findByEmpNoAndQuarter(Integer year, Integer quarter, String empNo) {
         return businessTripExtendMapper.selectByEmpNoAndQuarter(year, quarter, empNo);
     }
 
@@ -37,7 +36,7 @@ public class BusinessTripDao {
         return businessTripMapper.insert(businessTrip);
     }
 
-    public List<BusinessTrip> selectByEmpNoAndStatus(Long empNo, Integer status) {
+    public List<BusinessTrip> selectByEmpNoAndStatus(String empNo, Integer status) {
         return businessTripExtendMapper.selectByEmpNoAndStatus(empNo, status);
     }
 }

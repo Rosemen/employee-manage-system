@@ -14,7 +14,7 @@ import lombok.Data;
 public class AttendCountResponse {
 
     @ApiModelProperty(value = "员工编号")
-    private Long empNo;
+    private String empNo;
 
     @ApiModelProperty(value = "员工姓名")
     private String name;

@@ -23,11 +23,11 @@ public class LeavesDao {
     @Autowired
     private LeavesExtendMapper leavesExtendMapper;
 
-    public List<Leaves> findByEmpNoAndMonth(Integer year, Integer month, Long empNo) {
+    public List<Leaves> findByEmpNoAndMonth(Integer year, Integer month, String empNo) {
         return leavesExtendMapper.selectByEmpNoAndMonth(year, month, empNo);
     }
 
-    public List<Leaves> findByEmpNoAndQuarter(Integer year, Integer quarter, Long empNo) {
+    public List<Leaves> findByEmpNoAndQuarter(Integer year, Integer quarter, String empNo) {
         return leavesExtendMapper.selectByEmpNoAndQuarter(year, quarter, empNo);
     }
 
@@ -36,7 +36,7 @@ public class LeavesDao {
         return leavesMapper.insert(leave);
     }
 
-    public List<Leaves> findByEmpNoAndStatus(Long empNo, Integer status) {
+    public List<Leaves> findByEmpNoAndStatus(String empNo, Integer status) {
         return leavesExtendMapper.selectByEmpNoAndStatus(empNo, status);
     }
 }

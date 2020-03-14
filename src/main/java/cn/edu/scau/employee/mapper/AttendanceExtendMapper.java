@@ -19,7 +19,7 @@ public interface AttendanceExtendMapper {
      * @param empNo
      * @return
      */
-    List<Attendance> selectByEmpNo(Long empNo);
+    List<Attendance> selectByEmpNo(String empNo);
 
     /**
      * 查询某个员工某年某月的每日考勤记录
@@ -31,7 +31,7 @@ public interface AttendanceExtendMapper {
      */
     List<Attendance> selectByEmpNoAndMonth(@Param("year") Integer year,
                                            @Param("month") Integer month,
-                                           @Param("empNo") Long empNo);
+                                           @Param("empNo") String empNo);
 
     /**
      * 查询某个员工某年某个季度的每日考勤记录
@@ -43,7 +43,7 @@ public interface AttendanceExtendMapper {
      */
     List<Attendance> selectByEmpNoAndQuarter(@Param("year") Integer year,
                                              @Param("quarter") Integer quarter,
-                                             @Param("empNo") Long empNo);
+                                             @Param("empNo") String empNo);
 
     /**
      * 获取某天考勤记录
@@ -52,6 +52,6 @@ public interface AttendanceExtendMapper {
      * @param startTime
      * @return
      */
-    Attendance selectByEmpNoAndStartTime(@Param("empNo") Long empNo,
+    Attendance selectByEmpNoAndStartTime(@Param("empNo") String empNo,
                                          @Param("startTime") String startTime);
 }

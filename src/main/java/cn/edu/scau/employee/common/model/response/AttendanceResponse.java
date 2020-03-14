@@ -16,7 +16,7 @@ import java.util.Date;
 public class AttendanceResponse {
 
     @ApiModelProperty(value = "员工编号")
-    private Long empNo;
+    private String empNo;
 
     @ApiModelProperty(value = "签到时间")
     private Date startTime;

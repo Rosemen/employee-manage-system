@@ -1,4 +1,4 @@
-package cn.edu.scau.employee.dao;
+package cn.edu.scau.employee.dao.shiro;
 
 import cn.edu.scau.employee.entity.User;
 import cn.edu.scau.employee.mapper.UserExtendMapper;

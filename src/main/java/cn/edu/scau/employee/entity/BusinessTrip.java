@@ -14,7 +14,7 @@ public class BusinessTrip {
 
     private Long id;
 
-    private Long empNo;
+    private String empNo;
 
     private Date startTime;
 

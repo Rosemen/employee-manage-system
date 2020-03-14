@@ -16,7 +16,7 @@ import java.util.Date;
 public class BusinessTripResponse {
 
     @ApiModelProperty(value = "员工编号")
-    private Long empNo;
+    private String empNo;
 
     @ApiModelProperty(value = "开始时间")
     private Date startTime;

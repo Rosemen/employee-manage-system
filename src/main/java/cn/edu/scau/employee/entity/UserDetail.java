@@ -34,7 +34,7 @@ public class UserDetail {
 
     private Long deptId;
 
-    private Long empNo;
+    private String empNo;
 
     private String position;
 }

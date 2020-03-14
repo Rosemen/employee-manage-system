@@ -1,7 +1,7 @@
 package cn.edu.scau.employee.config.shiro;
 
 import cn.edu.scau.common.util.ObjectUtil;
-import cn.edu.scau.employee.dao.ShiroUserDao;
+import cn.edu.scau.employee.dao.shiro.ShiroUserDao;
 import cn.edu.scau.employee.entity.Resource;
 import cn.edu.scau.employee.entity.User;
 import cn.edu.scau.employee.service.ShiroResourceService;

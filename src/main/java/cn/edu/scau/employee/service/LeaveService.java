@@ -16,7 +16,7 @@ public interface LeaveService {
      * @param request 请假内容
      * @return
      */
-    CommonResult askForLeave(Long empNo, LeaveAddRequest request);
+    CommonResult askForLeave(String empNo, LeaveAddRequest request);
 
     /**
      * 查询请假情况
@@ -25,5 +25,5 @@ public interface LeaveService {
      * @param status
      * @return
      */
-    CommonResult queryLeaves(Long empNo, Integer status);
+    CommonResult queryLeaves(String empNo, Integer status);
 }

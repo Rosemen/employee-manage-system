@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.edu.scau.employee.mapper.SalaryMapper">
+  <resultMap id="BaseResultMap" type="cn.edu.scau.employee.entity.Salary">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="emp_no" jdbcType="BIGINT" property="empNo" />
+    <result column="base_salary" jdbcType="DECIMAL" property="baseSalary" />
+    <result column="actual_salary" jdbcType="DECIMAL" property="actualSalary" />
+    <result column="housing_subsidies" jdbcType="DECIMAL" property="housingSubsidies" />
+    <result column="meal_allowance" jdbcType="DECIMAL" property="mealAllowance" />
+    <result column="overtime_allowance" jdbcType="DECIMAL" property="overtimeAllowance" />
+    <result column="other_allowance" jdbcType="DECIMAL" property="otherAllowance" />
+    <result column="from_absences" jdbcType="DECIMAL" property="fromAbsences" />
+    <result column="housing_provident_fund" jdbcType="DECIMAL" property="housingProvidentFund" />
+    <result column="payment_time" jdbcType="TIMESTAMP" property="paymentTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, emp_no, base_salary, actual_salary, housing_subsidies, meal_allowance, overtime_allowance, 
+    other_allowance, from_absences, housing_provident_fund, payment_time, update_time
+  </sql>
+
+  <select id="selectById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from salary
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+
+  <delete id="deleteById" parameterType="java.lang.Long">
+    delete from salary
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+
+  <insert id="insert" parameterType="cn.edu.scau.employee.entity.Salary">
+    insert into salary
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="empNo != null">
+        emp_no,
+      </if>
+      <if test="baseSalary != null">
+        base_salary,
+      </if>
+      <if test="actualSalary != null">
+        actual_salary,
+      </if>
+      <if test="housingSubsidies != null">
+        housing_subsidies,
+      </if>
+      <if test="mealAllowance != null">
+        meal_allowance,
+      </if>
+      <if test="overtimeAllowance != null">
+        overtime_allowance,
+      </if>
+      <if test="otherAllowance != null">
+        other_allowance,
+      </if>
+      <if test="fromAbsences != null">
+        from_absences,
+      </if>
+      <if test="housingProvidentFund != null">
+        housing_provident_fund,
+      </if>
+      <if test="paymentTime != null">
+        payment_time,
+      </if>
+      <if test="updateTime != null">
+        update_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="empNo != null">
+        #{empNo,jdbcType=BIGINT},
+      </if>
+      <if test="baseSalary != null">
+        #{baseSalary,jdbcType=DECIMAL},
+      </if>
+      <if test="actualSalary != null">
+        #{actualSalary,jdbcType=DECIMAL},
+      </if>
+      <if test="housingSubsidies != null">
+        #{housingSubsidies,jdbcType=DECIMAL},
+      </if>
+      <if test="mealAllowance != null">
+        #{mealAllowance,jdbcType=DECIMAL},
+      </if>
+      <if test="overtimeAllowance != null">
+        #{overtimeAllowance,jdbcType=DECIMAL},
+      </if>
+      <if test="otherAllowance != null">
+        #{otherAllowance,jdbcType=DECIMAL},
+      </if>
+      <if test="fromAbsences != null">
+        #{fromAbsences,jdbcType=DECIMAL},
+      </if>
+      <if test="housingProvidentFund != null">
+        #{housingProvidentFund,jdbcType=DECIMAL},
+      </if>
+      <if test="paymentTime != null">
+        #{paymentTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        #{update_time,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateById" parameterType="cn.edu.scau.employee.entity.Salary">
+    update salary
+    <set>
+      <if test="empNo != null">
+        emp_no = #{empNo,jdbcType=BIGINT},
+      </if>
+      <if test="baseSalary != null">
+        base_salary = #{baseSalary,jdbcType=DECIMAL},
+      </if>
+      <if test="actualSalary != null">
+        actual_salary = #{actualSalary,jdbcType=DECIMAL},
+      </if>
+      <if test="housingSubsidies != null">
+        housing_subsidies = #{housingSubsidies,jdbcType=DECIMAL},
+      </if>
+      <if test="mealAllowance != null">
+        meal_allowance = #{mealAllowance,jdbcType=DECIMAL},
+      </if>
+      <if test="overtimeAllowance != null">
+        overtime_allowance = #{overtimeAllowance,jdbcType=DECIMAL},
+      </if>
+      <if test="otherAllowance != null">
+        other_allowance = #{otherAllowance,jdbcType=DECIMAL},
+      </if>
+      <if test="fromAbsences != null">
+        from_absences = #{fromAbsences,jdbcType=DECIMAL},
+      </if>
+      <if test="housingProvidentFund != null">
+        housing_provident_fund = #{housingProvidentFund,jdbcType=DECIMAL},
+      </if>
+      <if test="paymentTime != null">
+        payment_time = #{paymentTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="updateTime != null">
+        update_time = #{updateTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+
+</mapper>

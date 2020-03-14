@@ -26,7 +26,7 @@ public class BusinessTripServiceImpl implements BusinessTripService {
     private BusinessTripDao businessTripDao;
 
     @Override
-    public CommonResult businessAway(Long empNo, BusinessTripAddRequest request) {
+    public CommonResult businessAway(String empNo, BusinessTripAddRequest request) {
         BusinessTrip businessTrip = ConvertUtil.convert(request, BusinessTrip.class);
         businessTrip.setEmpNo(empNo);
         businessTrip.setStatus(BusinessStatusEnum.WAIT_HANDLE.getCode());
@@ -35,7 +35,7 @@ public class BusinessTripServiceImpl implements BusinessTripService {
     }
 
     @Override
-    public CommonResult queryBusinessTrips(Long empNo, Integer status) {
+    public CommonResult queryBusinessTrips(String empNo, Integer status) {
         List<BusinessTrip> businessTrips = businessTripDao.selectByEmpNoAndStatus(empNo, status);
         List<BusinessTripResponse> responses = new ArrayList<>();
         businessTrips.forEach(businessTrip -> {

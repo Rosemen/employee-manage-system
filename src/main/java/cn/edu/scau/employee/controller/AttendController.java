@@ -48,7 +48,7 @@ public class AttendController {
     @ApiOperation(value = "统计某员工的考勤信息")
     @ApiImplicitParam(name = "employee-token", value = "用于登录认证的token", paramType = "header", dataType = "string")
     @RequestMapping(value = "/query/{empNo}", method = RequestMethod.POST)
-    public CommonResult query(@PathVariable("empNo") Long empNo, @RequestBody AttendCountRequest request) throws Exception {
+    public CommonResult query(@PathVariable("empNo") String empNo, @RequestBody AttendCountRequest request) throws Exception {
         ValidatorUtil.validate(request);
         return attendanceService.countByEmpNo(request, empNo);
     }
@@ -56,14 +56,14 @@ public class AttendController {
     @ApiOperation(value = "每日打卡")
     @ApiImplicitParam(name = "employee-token", value = "用于登录认证的token", paramType = "header", dataType = "string")
     @RequestMapping(value = "/clock/{empNo}", method = RequestMethod.GET)
-    public CommonResult clock(@PathVariable("empNo") Long empNo) {
+    public CommonResult clock(@PathVariable("empNo") String empNo) {
         return attendanceService.clock(empNo);
     }
 
     @ApiOperation(value = "请假")
     @ApiImplicitParam(name = "employee-token", value = "用于登录认证的token", paramType = "header", dataType = "string")
     @RequestMapping(value = "/leave/{empNo}", method = RequestMethod.POST)
-    public CommonResult askForLeave(@PathVariable("empNo") Long empNo, @RequestBody LeaveAddRequest request) throws Exception {
+    public CommonResult askForLeave(@PathVariable("empNo") String empNo, @RequestBody LeaveAddRequest request) throws Exception {
         ValidatorUtil.validate(request);
         return leaveService.askForLeave(empNo, request);
     }
@@ -71,7 +71,7 @@ public class AttendController {
     @ApiOperation(value = "出差申请")
     @ApiImplicitParam(name = "employee-token", value = "用于登录认证的token", paramType = "header", dataType = "string")
     @RequestMapping(value = "/business/{empNo}", method = RequestMethod.POST)
-    public CommonResult businessAway(@PathVariable("empNo") Long empNo, @RequestBody BusinessTripAddRequest request) throws Exception {
+    public CommonResult businessAway(@PathVariable("empNo") String empNo, @RequestBody BusinessTripAddRequest request) throws Exception {
         ValidatorUtil.validate(request);
         return businessTripService.businessAway(empNo, request);
     }
@@ -79,21 +79,21 @@ public class AttendController {
     @ApiOperation(value = "查询请假记录")
     @ApiImplicitParam(name = "employee-token", value = "用于登录认证的token", paramType = "header", dataType = "string")
     @RequestMapping(value = "/query/leaves", method = RequestMethod.GET)
-    public CommonResult queryLeaves(@RequestParam(value = "empNo", required = false) Long empNo, @RequestParam(value = "status", required = false) Integer status) {
+    public CommonResult queryLeaves(@RequestParam(value = "empNo", required = false) String empNo, @RequestParam(value = "status", required = false) Integer status) {
         return leaveService.queryLeaves(empNo, status);
     }
 
     @ApiOperation(value = "查询出差记录")
     @ApiImplicitParam(name = "employee-token", value = "用于登录认证的token", paramType = "header", dataType = "string")
     @RequestMapping(value = "/query/business", method = RequestMethod.GET)
-    public CommonResult queryBusinessTrips(@RequestParam(value = "empNo", required = false) Long empNo, @RequestParam(value = "status", required = false) Integer status) {
+    public CommonResult queryBusinessTrips(@RequestParam(value = "empNo", required = false) String empNo, @RequestParam(value = "status", required = false) Integer status) {
         return businessTripService.queryBusinessTrips(empNo, status);
     }
 
     @ApiOperation(value = "查询每日打卡记录")
     @ApiImplicitParam(name = "employee-token", value = "用于登录认证的token", paramType = "header", dataType = "string")
     @RequestMapping(value = "/query/attendance/{empNo}", method = RequestMethod.POST)
-    public CommonResult queryAttendance(@PathVariable("empNo") Long empNo, @RequestBody AttendanceQueryRequest request) throws Exception {
+    public CommonResult queryAttendance(@PathVariable("empNo") String empNo, @RequestBody AttendanceQueryRequest request) throws Exception {
         ValidatorUtil.validate(request);
         return attendanceService.queryAttendances(empNo, request);
     }

@@ -61,7 +61,7 @@ public class UserDetailDao {
         return userDetailExtendMapper.selectAll();
     }
 
-    public UserDetail findByEmpNo(Long empNo) {
+    public UserDetail findByEmpNo(String empNo) {
         return userDetailExtendMapper.selectByEmpNo(empNo);
     }
 }

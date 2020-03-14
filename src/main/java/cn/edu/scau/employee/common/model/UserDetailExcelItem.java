@@ -19,7 +19,7 @@ public class UserDetailExcelItem implements Serializable {
     private static final long serialVersionUID = -2681990221426393702L;
 
     @ExcelProperty(index = 0, value = "工号")
-    private Long empNo;
+    private String empNo;
 
     @ExcelProperty(index = 1, value = "姓名")
     private String name;

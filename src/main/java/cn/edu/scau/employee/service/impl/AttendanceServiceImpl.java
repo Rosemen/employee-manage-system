@@ -50,7 +50,7 @@ public class AttendanceServiceImpl implements AttendanceService {
     private BusinessTripDao businessTripDao;
 
     @Override
-    public CommonResult countByEmpNo(AttendCountRequest request, Long empNo) {
+    public CommonResult countByEmpNo(AttendCountRequest request, String empNo) {
         UserDetail userDetail = userDetailDao.findByEmpNo(empNo);
         AttendCountResponse response = this.doCountAttendRecord(userDetail, request);
         return CommonResult.success(response);
@@ -79,7 +79,7 @@ public class AttendanceServiceImpl implements AttendanceService {
      * @return
      */
     private AttendCountResponse doCountAttendRecord(UserDetail userDetail, AttendCountRequest request) {
-        Long empNo = userDetail.getEmpNo();
+        String empNo = userDetail.getEmpNo();
         AttendCountResponse response = new AttendCountResponse();
         List<Attendance> attendances = null;
         List<Leaves> leaves = null;
@@ -303,7 +303,7 @@ public class AttendanceServiceImpl implements AttendanceService {
     }
 
     @Override
-    public CommonResult clock(Long empNo) {
+    public CommonResult clock(String empNo) {
         Date currentDate = new Date();
         Attendance attendance = attendanceDao.findByEmpNoAndStartTime(empNo,
                 DateUtil.dateToStr(currentDate, "yyyy-MM-dd"));
@@ -326,7 +326,7 @@ public class AttendanceServiceImpl implements AttendanceService {
     }
 
     @Override
-    public CommonResult queryAttendances(Long empNo, AttendanceQueryRequest request) throws Exception {
+    public CommonResult queryAttendances(String empNo, AttendanceQueryRequest request) throws Exception {
         PageConstant page = request.getPage();
         Integer currentPage = page.getCurrentPage();
         Integer pageSize = page.getPageSize();

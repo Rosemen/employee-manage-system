@@ -3,7 +3,7 @@
 <mapper namespace="cn.edu.scau.employee.mapper.LeavesExtendMapper">
     <resultMap id="BaseResultMap" type="cn.edu.scau.employee.entity.Leaves">
         <id column="id" jdbcType="BIGINT" property="id"/>
-        <result column="emp_no" jdbcType="BIGINT" property="empNo"/>
+        <result column="emp_no" jdbcType="VARCHAR" property="empNo"/>
         <result column="type" jdbcType="INTEGER" property="type"/>
         <result column="start_time" jdbcType="TIMESTAMP" property="startTime"/>
         <result column="end_time" jdbcType="TIMESTAMP" property="endTime"/>
@@ -41,7 +41,7 @@
         <include refid="Base_Column_List"/>
         from leaves
         <where>
-            <if test="empNo != null">
+            <if test="empNo != null and empNo != ''">
                 and emp_no = #{empNo}
             </if>
             <if test="status != null">

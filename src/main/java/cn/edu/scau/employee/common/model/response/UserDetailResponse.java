@@ -49,7 +49,7 @@ public class UserDetailResponse {
     private Long deptId;
 
     @ApiModelProperty(value = "员工编号")
-    private Long empNo;
+    private String empNo;
 
     @ApiModelProperty(value = "职位")
     private String position;

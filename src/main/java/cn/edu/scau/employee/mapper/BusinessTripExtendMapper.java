@@ -23,7 +23,7 @@ public interface BusinessTripExtendMapper {
      */
     List<BusinessTrip> selectByEmpNoAndMonth(@Param("year") Integer year,
                                              @Param("month") Integer month,
-                                             @Param("empNo") Long empNo);
+                                             @Param("empNo") String empNo);
 
     /**
      * 查询某年某季度某员工的出差记录
@@ -35,7 +35,7 @@ public interface BusinessTripExtendMapper {
      */
     List<BusinessTrip> selectByEmpNoAndQuarter(@Param("year") Integer year,
                                                @Param("quarter") Integer quarter,
-                                               @Param("empNo") Long empNo);
+                                               @Param("empNo") String empNo);
 
 
     /**
@@ -45,5 +45,5 @@ public interface BusinessTripExtendMapper {
      * @param status
      * @return
      */
-    List<BusinessTrip> selectByEmpNoAndStatus(@Param("empNo") Long empNo, @Param("status") Integer status);
+    List<BusinessTrip> selectByEmpNoAndStatus(@Param("empNo") String empNo, @Param("status") Integer status);
 }

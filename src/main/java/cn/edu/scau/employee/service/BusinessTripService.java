@@ -16,7 +16,7 @@ public interface BusinessTripService {
      * @param request
      * @return
      */
-    CommonResult businessAway(Long empNo, BusinessTripAddRequest request);
+    CommonResult businessAway(String empNo, BusinessTripAddRequest request);
 
     /**
      * 查询出差记录
@@ -25,5 +25,5 @@ public interface BusinessTripService {
      * @param status
      * @return
      */
-    CommonResult queryBusinessTrips(Long empNo, Integer status);
+    CommonResult queryBusinessTrips(String empNo, Integer status);
 }

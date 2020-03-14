@@ -3,7 +3,7 @@
 <mapper namespace="cn.edu.scau.employee.mapper.AttendanceExtendMapper">
     <resultMap id="BaseResultMap" type="cn.edu.scau.employee.entity.Attendance">
         <id column="id" jdbcType="BIGINT" property="id"/>
-        <result column="emp_no" jdbcType="BIGINT" property="empNo"/>
+        <result column="emp_no" jdbcType="VARCHAR" property="empNo"/>
         <result column="start_time" jdbcType="TIMESTAMP" property="startTime"/>
         <result column="end_time" jdbcType="TIMESTAMP" property="endTime"/>
         <result column="late" jdbcType="TINYINT" property="late"/>
@@ -13,11 +13,11 @@
     id, emp_no, start_time, end_time, late, leave_early
     </sql>
 
-    <select id="selectByEmpNo" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    <select id="selectByEmpNo" parameterType="java.lang.String" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from attendence
-        where emp_no = #{empNo,jdbcType=BIGINT}
+        where emp_no = #{empNo,jdbcType=VARCHAR}
     </select>
 
     <select id="selectByEmpNoAndMonth" resultMap="BaseResultMap">
@@ -31,7 +31,7 @@
             <if test="year != null">
                 and year(start_time) = #{year}
             </if>
-            <if test="empNo != null">
+            <if test="empNo != null and empNo != ''">
                 and emp_no = #{empNo}
             </if>
         </where>

@@ -24,19 +24,19 @@ public class AttendanceDao {
     @Autowired
     private AttendanceExtendMapper attendanceExtendMapper;
 
-    public List<Attendance> findByEmpNo(Long empNo) {
+    public List<Attendance> findByEmpNo(String empNo) {
         return attendanceExtendMapper.selectByEmpNo(empNo);
     }
 
-    public List<Attendance> findByEmpNoAndMonth(Integer year, Integer month, Long empNo) {
+    public List<Attendance> findByEmpNoAndMonth(Integer year, Integer month, String empNo) {
         return attendanceExtendMapper.selectByEmpNoAndMonth(year, month, empNo);
     }
 
-    public List<Attendance> findByEmpNoAndQuarter(Integer year, Integer quarter, Long empNo) {
+    public List<Attendance> findByEmpNoAndQuarter(Integer year, Integer quarter, String empNo) {
         return attendanceExtendMapper.selectByEmpNoAndQuarter(year, quarter, empNo);
     }
 
-    public Attendance findByEmpNoAndStartTime(Long empNo, String startTime) {
+    public Attendance findByEmpNoAndStartTime(String empNo, String startTime) {
         return attendanceExtendMapper.selectByEmpNoAndStartTime(empNo, startTime);
     }
 

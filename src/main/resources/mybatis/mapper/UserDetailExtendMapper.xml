@@ -13,7 +13,7 @@
         <result column="photo" jdbcType="VARCHAR" property="photo"/>
         <result column="education" jdbcType="VARCHAR" property="education"/>
         <result column="dept_id" jdbcType="BIGINT" property="deptId"/>
-        <result column="emp_no" jdbcType="BIGINT" property="empNo"/>
+        <result column="emp_no" jdbcType="VARCHAR" property="empNo"/>
         <result column="position" jdbcType="VARCHAR" property="position"/>
     </resultMap>
     <sql id="Base_Column_List">
@@ -67,10 +67,10 @@
         from user_detail
     </select>
 
-    <select id="selectByEmpNo" resultMap="BaseResultMap" parameterType="java.lang.Long">
+    <select id="selectByEmpNo" resultMap="BaseResultMap" parameterType="java.lang.String">
         select
         <include refid="Base_Column_List"/>
         from user_detail
-        where emp_no = #{empNo, jdbcType=BIGINT}
+        where emp_no = #{empNo, jdbcType=VARCHAR}
     </select>
 </mapper>

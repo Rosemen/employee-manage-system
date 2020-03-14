@@ -65,4 +65,13 @@ public interface UserDetailService {
      * @throws Exception
      */
     List<UserDetailExcelItem> download() throws Exception;
+
+    /**
+     * 根据工号查询
+     *
+     * @param empNo
+     * @return
+     */
+    CommonResult findByEmpNo(String empNo);
+
 }

@@ -65,5 +65,5 @@ public interface UserDetailExtendMapper {
      * @param empNo
      * @return
      */
-    UserDetail selectByEmpNo(Long empNo);
+    UserDetail selectByEmpNo(String empNo);
 }
