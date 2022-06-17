@@ -24,7 +24,7 @@
         <pageHelper.version>1.2.12</pageHelper.version>
         <redis.version>2.2.0.RELEASE</redis.version>
         <shiro.version>1.4.1</shiro.version>
-        <json.version>1.2.62</json.version>
+        <json.version>1.2.83</json.version>
         <common-lang.version>3.9</common-lang.version>
         <commons-pool2.version>2.8.0</commons-pool2.version>
         <excel.version>2.1.6</excel.version>
