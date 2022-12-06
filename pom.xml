@@ -31,7 +31,7 @@
         <tool.version>5.0.3</tool.version>
         <sharding.version>3.1.0</sharding.version>
         <common.version>1.0-SNAPSHOT</common.version>
-        <common-net.version>3.6</common-net.version>
+        <common-net.version>3.9.0</common-net.version>
         <easy-excel.version>2.1.6</easy-excel.version>
     </properties>
 
